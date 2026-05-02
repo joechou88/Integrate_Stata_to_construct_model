@@ -1,0 +1,9 @@
+__pycache__
+
+*.docx
+*.pdf
+*.xlsx
+*.txt
+*.dta
+
+check_year_sedol_uniqueness.py
