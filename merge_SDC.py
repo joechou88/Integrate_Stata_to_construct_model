@@ -57,15 +57,29 @@ if 'is_merged' in merged_df.columns:
     merged_df = merged_df.drop(columns=['is_merged'])
 merged_df.columns = [c.replace(' ', '_').replace('/', '_').replace('-', '_').replace(':', '_') for c in merged_df.columns]
 
+original_stata_cols = [c for c in stata_df.columns if c in merged_df.columns]
 added_columns = [
     'Underpricing', 'Ln_Age', 'VC_backed', 'Relative_Offer_Size',
     'Firm_Commitment', 'Underwriter_Reputation', 'Integer_Offer_Price'
 ]
-original_stata_cols = list(stata_df.columns)
-output_columns = [col for col in (original_stata_cols + added_columns) if col in merged_df.columns]
-merged_df = merged_df[output_columns]
+sdc_data = {col: merged_df[col] for col in added_columns if col in merged_df.columns}
+merged_df = merged_df[original_stata_cols].copy()
 
-output_filename = config.STATA_OUTPUT
+insert_map = {
+    'Underpricing': 21,
+    'Ln_Age': 22,
+    'Relative_Offer_Size': 110,
+    'VC_backed': 115,
+    'Firm_Commitment': 116,
+    'Underwriter_Reputation': 117,
+    'Integer_Offer_Price': 118
+}
+
+for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
+    if col in sdc_data:
+        merged_df.insert(min(idx, len(merged_df.columns)), col, sdc_data[col])
+
+output_filename = config.STATA_SDC_OUTPUT
 merged_df.to_stata(output_filename, write_index=False)
 
 print(f"原始 Stata 行數: {total_obs}")
