@@ -5,15 +5,20 @@ print("=" * 60)
 print("讀取 Excel country controls ...")
 excel_raw = pd.read_excel(config.COUNTRY_LEVEL_CONTROLS_INPUT)
 excel_raw.columns = [c.replace(" ", "_") for c in excel_raw.columns]
-excel_raw = excel_raw.rename(columns={'Country_code': 'country_code', 'Year': 'year'})
+excel_raw = excel_raw.rename(columns={
+    'Country_code': 'country_code', 
+    'Year': 'year',
+    'Overall_Score': 'Economic_Freedom'
+})
 primary_keys = ["country_code", "year"]
-start_column = 4
+start_column = 12
+end_column = 13
 
 for key in primary_keys:
     if key not in excel_raw.columns:
         raise ValueError(f"Excel 中找不到欄位 '{key}'，現有欄位：{list(excel_raw.columns)}")
 
-control_columns = list(excel_raw.columns[start_column:])
+control_columns = list(excel_raw.columns[start_column:end_column])
 for col in control_columns:
     excel_raw[col] = pd.to_numeric(excel_raw[col], errors='coerce')
 control_df = excel_raw[primary_keys + control_columns].copy()
@@ -58,6 +63,33 @@ if len(merged_df) != total_obs:
         f"合併後行數 ({len(merged_df)}) 不等於原始行數 ({total_obs})，"
         "請檢查 Excel 是否有非唯一的 [country_code + year] 組合。"
     )
+
+cols_to_move = [
+    'Economic_Freedom', 
+    'GDP_per_capita_US', 
+    'Ln_GDPOP', 
+    'GDP_per_capita_growth', 
+    'Land_area', 
+    'Listed_domestic_companies', 
+    'Ln_Listed', 
+    'CAP_Ratio', 
+    'str'
+]
+
+current_cols = merged_df.columns.tolist()
+valid_cols_to_move = []
+for c in cols_to_move:
+    if c in current_cols:
+        current_cols.remove(c)
+        valid_cols_to_move.append(c)
+    else:
+        print(f"  [WARN] 找不到指定的調整欄位: {c}")
+
+insert_index = min(123, len(current_cols))
+new_col_order = current_cols[:insert_index] + valid_cols_to_move + current_cols[insert_index:]
+
+merged_df = merged_df[new_col_order]
+print(f"\n  [INFO] 已將 Economic_Freedom 等 {len(valid_cols_to_move)} 個欄位移動至 Index={insert_index} 的位置。")
 
 output_path = config.STATA_COUNTRY_LEVEL_CONTROLS_OUTPUT
 merged_df.to_stata(output_path, write_index=False)

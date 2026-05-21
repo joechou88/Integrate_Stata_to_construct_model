@@ -60,7 +60,8 @@ merged_df.columns = [c.replace(' ', '_').replace('/', '_').replace('-', '_').rep
 original_stata_cols = [c for c in stata_df.columns if c in merged_df.columns]
 added_columns = [
     'Underpricing', 'Ln_Age', 'VC_backed', 'Relative_Offer_Size',
-    'Firm_Commitment', 'Underwriter_Reputation', 'Integer_Offer_Price'
+    'Firm_Commitment', 'Underwriter_Reputation', 'Integer_Offer_Price',
+    'Bookbuilt', 'IPO_count', 'Price_Stabilization', 'Equity_Carve_out'
 ]
 sdc_data = {col: merged_df[col] for col in added_columns if col in merged_df.columns}
 merged_df = merged_df[original_stata_cols].copy()
@@ -72,7 +73,11 @@ insert_map = {
     'VC_backed': 115,
     'Firm_Commitment': 116,
     'Underwriter_Reputation': 117,
-    'Integer_Offer_Price': 118
+    'Integer_Offer_Price': 118,
+    'Bookbuilt': 119,
+    'Equity_Carve_out': 120,
+    'IPO_count': 121, 
+    'Price_Stabilization': 122,
 }
 
 for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
