@@ -11,7 +11,7 @@ excel_raw = excel_raw.rename(columns={
     'Overall_Score': 'Economic_Freedom'
 })
 primary_keys = ["country_code", "year"]
-start_column = 12
+start_column = 4
 end_column = 13
 
 for key in primary_keys:
