@@ -1,4 +1,5 @@
 __pycache__
+check
 
 *.docx
 *.pdf
@@ -7,5 +8,3 @@ __pycache__
 *.txt
 *.dta
 *.sas7bdat
-
-check_year_sedol_uniqueness.py
