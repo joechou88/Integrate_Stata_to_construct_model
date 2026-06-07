@@ -10,11 +10,11 @@ print(f"Reading data from {input_path}...")
 df = pd.read_stata(input_path)
 
 df['Post'] = np.where((df['year'] - 1) > 2018, 1, 0)
-
-print(f"Post variable created. Distribution:\n{df['Post'].value_counts()}")
+df['Postxhigh_lease'] = df['Post'] * df['high_lease']
 
 insert_map = {
-    'Post': 22
+    'Post': 22,
+    'Postxhigh_lease': 23
 }
 
 for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):

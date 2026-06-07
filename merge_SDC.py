@@ -18,21 +18,21 @@ stata_df['year'] = stata_df['year'].astype(int)
 sdc_df['year'] = sdc_df['Dates: Offer Year (CCYY)'].astype(int)
 
 sdc_df['is_merged'] = 1
-sdc_by_dscd = sdc_df.dropna(subset=['dscd']).drop_duplicates(subset=['dscd', 'year'])
-sdc_by_isin = sdc_df.dropna(subset=['isin']).drop_duplicates(subset=['isin', 'year'])
-sdc_by_sedol = sdc_df.dropna(subset=['sedol']).drop_duplicates(subset=['sedol', 'year'])
-total_obs = len(stata_df)
+stata_by_dscd = stata_df.dropna(subset=['dscd']).drop_duplicates(subset=['dscd', 'year'])
+stata_by_isin = stata_df.dropna(subset=['isin']).drop_duplicates(subset=['isin', 'year'])
+stata_by_sedol = stata_df.dropna(subset=['sedol']).drop_duplicates(subset=['sedol', 'year'])
+total_obs = len(sdc_df)
 
 # 第一輪：DSCD + Year
-merged_df = pd.merge(stata_df, sdc_by_dscd, on=['dscd', 'year'], how='left', suffixes=('', '_sdc'))
+merged_df = pd.merge(sdc_df, stata_by_dscd, on=['dscd', 'year'], how='left', suffixes=('', '_stata'))
 unmatched_after_dscd = merged_df['is_merged'].isna().sum()
 print(f"1. DSCD+Year 合併後，未匹配數量: {unmatched_after_dscd} / {total_obs}")
 
 # 第二輪：ISIN + Year
 unmatched = merged_df['is_merged'].isna()
 if unmatched.any():
-    unmatched_part = merged_df[unmatched][stata_df.columns]
-    rematched_isin = pd.merge(unmatched_part, sdc_by_isin, on=['isin', 'year'], how='left', suffixes=('', '_drop'))
+    unmatched_part = merged_df[unmatched][sdc_df.columns]
+    rematched_isin = pd.merge(unmatched_part, stata_by_isin, on=['isin', 'year'], how='left', suffixes=('', '_stata'))
     merged_df.update(rematched_isin)
 
 unmatched_after_isin = merged_df['is_merged'].isna().sum()
@@ -41,20 +41,24 @@ print(f"2. ISIN+Year 合併後，未匹配數量: {unmatched_after_isin} / {tota
 # 第三輪：SEDOL + Year
 unmatched = merged_df['is_merged'].isna()
 if unmatched.any():
-    unmatched_part_sedol = merged_df[unmatched][stata_df.columns]
+    unmatched_part_sedol = merged_df[unmatched][sdc_df.columns]
     unmatched_part_sedol = unmatched_part_sedol.dropna(subset=['sedol'])
-    sdc_df = sdc_df.dropna(subset=['sedol'])
-    rematched_sedol = pd.merge(unmatched_part_sedol, sdc_by_sedol, on=['sedol', 'year'], how='left', suffixes=('', '_drop'))
+    rematched_sedol = pd.merge(unmatched_part_sedol, stata_by_sedol, on=['sedol', 'year'], how='left', suffixes=('', '_stata'))
     rematched_sedol.index = unmatched_part_sedol.index
     merged_df.update(rematched_sedol)
 
 unmatched_after_sedol = merged_df['is_merged'].isna().sum()
 print(f"3. SEDOL+Year 合併後，最終未匹配數量: {unmatched_after_sedol} / {total_obs}")
 
-merged_df = merged_df.loc[:, ~merged_df.columns.str.contains('_drop')]
+for col in stata_df.columns:
+    if f"{col}_stata" in merged_df.columns:
+        merged_df[col] = merged_df[f"{col}_stata"]
+        merged_df = merged_df.drop(columns=[f"{col}_stata"])
+
 merged_count = merged_df['is_merged'].notna().sum()
 if 'is_merged' in merged_df.columns:
     merged_df = merged_df.drop(columns=['is_merged'])
+
 merged_df.columns = [c.replace(' ', '_').replace('/', '_').replace('-', '_').replace(':', '_') for c in merged_df.columns]
 
 original_stata_cols = [c for c in stata_df.columns if c in merged_df.columns]
