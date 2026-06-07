@@ -5,12 +5,12 @@
 - **Output**: `Stata/IPO_2015_2024.dta`
 #### 1-2. Integrate country-level controls data (`merge_country_level_controls.py`)
 - **Objective**: Merge the data with country-level controls (from Excel) matching year t to year t, as contemporaneous macroeconomic conditions and market sentiment directly impact underwriter pricing during the issue year.
-- **Input**: `Input/country_controls.xlsx`, `Stata/IPO_2015_2024.dta`
+- **Input**: `Stata/IPO_2015_2024.dta`, `Input/country_controls.xlsx`
 - **Output**: `Stata/IPO_2015_2024_with_country_level_controls.dta`
 - **Problem**: In 2021, The Heritage Foundation removed Hong Kong from its independent rankings, merging its economic freedom score with China's, citing Beijing's control over Hong Kong's economic policies. (Source: https://www.bbc.com/zhongwen/trad/business-56277534)
 - **Solution**: Macroeconomic freedom is highly "rigid" and rarely mutates in the short term. To avoid data distortion caused by the extreme score gap between China and Hong Kong (approx. 50 vs. 90), Hong Kong's 2020 score was directly applied to the 2021–2024 Hong Kong IPO samples.
 #### 1-3. Integrate Financial Analyst Forecast data (`AFOL.py`)
-- **Objective**: Merge the data with AFOL (from SAS) matching year t to year t
+- **Objective**: Merge the data with AFOL (from SAS) matching year t to year t, using primary key `country_code` + `fpe_year`
 - **Input**: `Input/ibes_non_us_1983_2025.sas7bdat`, `Input/ibes_us_1983_2025.sas7bdat`, `Stata/IPO_2015_2024_with_country_level_controls.dta`
 - **Output**: `Stata/IPO_2015_2024_with_AFOL.dta`
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
