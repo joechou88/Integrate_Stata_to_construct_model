@@ -13,6 +13,7 @@
 - **Objective**: Merge the data with AFOL (from SAS) matching year t to year t, using primary key `country_code` + `fpe_year`
 - **Input**: `Input/ibes_non_us_1983_2025.sas7bdat`, `Input/ibes_us_1983_2025.sas7bdat`, `Stata/IPO_2015_2024_with_country_level_controls.dta`
 - **Output**: `Stata/IPO_2015_2024_with_AFOL.dta`
+- **Problem**: Only 694/4818 IPO firms have AFOL values.
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
 - **Objective**: Merge the data with INST (from ) matching year t to year t-1
 - **Input**: `Input/`

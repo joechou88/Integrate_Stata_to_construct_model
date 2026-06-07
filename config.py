@@ -16,6 +16,7 @@ IBES_INT_INPUT = os.path.join(INPUT_DIR, "ibes_int_1983_2025.sas7bdat")
 STATA_DERIVE_COLUMNS_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_derive_columns.dta")
 
 STATA_AFOL_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_with_AFOL.dta")
+STATA_INST_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_with_AFOL.dta")
 STATA_Model1_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_model_1.dta")
 STATA_Model2_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_model_2.dta")
 STATA_Model3_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_model_3.dta")

@@ -5,7 +5,7 @@ import warnings
 
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 
-input_path = config.STATA_COUNTRY_LEVEL_CONTROLS_OUTPUT
+input_path = config.STATA_INST_OUTPUT
 print(f"Reading data from {input_path}...")
 df = pd.read_stata(input_path)
 

@@ -2,7 +2,7 @@ import pandas as pd
 import config
 
 sdc_df = pd.read_excel(config.SDC_INPUT)
-stata_df = pd.read_stata(config.STATA_INPUT)
+stata_df = pd.read_stata(config.STATA_INPUT).copy()
 
 id_column_mapping = {
     'dscd': 'Datastream',
@@ -17,7 +17,7 @@ for stata_col, sdc_col in id_column_mapping.items():
 stata_df['year'] = stata_df['year'].astype(int)
 sdc_df['year'] = sdc_df['Dates: Offer Year (CCYY)'].astype(int)
 
-sdc_df['is_merged'] = 1
+stata_df['is_merged'] = 1
 stata_by_dscd = stata_df.dropna(subset=['dscd']).drop_duplicates(subset=['dscd', 'year'])
 stata_by_isin = stata_df.dropna(subset=['isin']).drop_duplicates(subset=['isin', 'year'])
 stata_by_sedol = stata_df.dropna(subset=['sedol']).drop_duplicates(subset=['sedol', 'year'])
@@ -33,6 +33,7 @@ unmatched = merged_df['is_merged'].isna()
 if unmatched.any():
     unmatched_part = merged_df[unmatched][sdc_df.columns]
     rematched_isin = pd.merge(unmatched_part, stata_by_isin, on=['isin', 'year'], how='left', suffixes=('', '_stata'))
+    rematched_isin.index = unmatched_part.index
     merged_df.update(rematched_isin)
 
 unmatched_after_isin = merged_df['is_merged'].isna().sum()
@@ -59,15 +60,21 @@ merged_count = merged_df['is_merged'].notna().sum()
 if 'is_merged' in merged_df.columns:
     merged_df = merged_df.drop(columns=['is_merged'])
 
-merged_df.columns = [c.replace(' ', '_').replace('/', '_').replace('-', '_').replace(':', '_') for c in merged_df.columns]
-
-original_stata_cols = [c for c in stata_df.columns if c in merged_df.columns]
 added_columns = [
     'Underpricing', 'Ln_Age', 'VC_backed', 'Relative_Offer_Size',
     'Firm_Commitment', 'Underwriter_Reputation', 'Integer_Offer_Price',
-    'Bookbuilt', 'IPO_count', 'Price_Stabilization', 'Equity_Carve_out'
+    'Bookbuilt', 'IPO_count', 'Price_Stabilization', 'Equity_Carve_out',
+    'Dates: Issue Date', 'Dates: Offer Year (CCYY)', 'Offer Price (USD)'
 ]
-sdc_data = {col: merged_df[col] for col in added_columns if col in merged_df.columns}
+
+sdc_data = {}
+for col in added_columns:
+    if col in merged_df.columns:
+        new_col = col.replace('Dates: ', '').replace(' ', '_').replace('/', '_').replace('-', '_').replace(':', '').replace('(', '').replace(')', '')
+        sdc_data[new_col] = merged_df[col]
+
+merged_df.columns = [c.replace(' ', '_').replace('/', '_').replace('-', '_').replace(':', '') for c in merged_df.columns]
+original_stata_cols = [c for c in stata_df.columns if c in merged_df.columns]
 merged_df = merged_df[original_stata_cols].copy()
 
 insert_map = {
@@ -82,6 +89,9 @@ insert_map = {
     'Equity_Carve_out': 120,
     'IPO_count': 121, 
     'Price_Stabilization': 122,
+    'Issue_Date': 123,
+    'Offer_Year_CCYY': 124,
+    'Offer_Price_USD': 125
 }
 
 for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):

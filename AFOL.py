@@ -15,7 +15,7 @@ stata_df['year'] = stata_df['year'].fillna(0).astype(int)
 ibes_df['year'] = ibes_df['fpe_year'].fillna(0).astype(int)
 
 ibes_by_country = ibes_df.dropna(subset=['country_code', 'year'])
-ibes_by_country = ibes_by_country.groupby(['country_code', 'year'])[['AFOL', 'Ln_AFOL']].mean().reset_index()
+ibes_by_country = ibes_by_country.groupby(['country_code', 'year'])[['AFOL']].mean().reset_index()
 
 ibes_by_country['is_merged'] = 1
 total_obs = len(stata_df)
@@ -30,9 +30,14 @@ print(f"country_code+Year 合併後，未匹配數量: {unmatched_after} / {tota
 missing_afol = merged_df[merged_df['AFOL'].isna()]
 missing_counts = missing_afol.groupby(['country', 'country_code', 'year']).size().reset_index(name='Missing_IPO_Count')
 missing_counts = missing_counts.sort_values(by=['country', 'year'])
-
 with open("missing_AFOL_for_country_year_combinations.txt", "w", encoding="utf-8") as f:
     f.write(missing_counts.to_string(index=False))
+
+matched_afol = merged_df[merged_df['AFOL'].notna()]
+matched_counts = matched_afol.groupby(['country', 'country_code', 'year']).size().reset_index(name='Matched_IPO_Count')
+matched_counts = matched_counts.sort_values(by=['country', 'year'])
+with open("matched_AFOL_for_country_year_combinations.txt", "w", encoding="utf-8") as f:
+    f.write(matched_counts.to_string(index=False))
 
 if 'is_merged' in merged_df.columns:
     merged_df = merged_df.drop(columns=['is_merged'])
