@@ -17,7 +17,7 @@
 - **Output**: `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Sample size**: 3,110 -> 3,110
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
-- **Objective**: Merge the data with INST (from ) matching year t to year t-1
+- **Objective**: Merge the data with INST (from SAS) matching year t to year t-1
 - **Input**: `Input/`
 - **Output**: `Stata/IPO_2015_2024_with_INST.dta`
 - **Sample size**: 3,110 -> 
