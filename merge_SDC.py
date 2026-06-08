@@ -57,6 +57,8 @@ for col in stata_df.columns:
         merged_df = merged_df.drop(columns=[f"{col}_stata"])
 
 merged_count = merged_df['is_merged'].notna().sum()
+merged_df = merged_df[merged_df['is_merged'].notna()].copy() # 沒有合併上的 record 就 drop 掉
+
 if 'is_merged' in merged_df.columns:
     merged_df = merged_df.drop(columns=['is_merged'])
 

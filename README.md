@@ -1,6 +1,6 @@
 ## Python Scripts
 #### 1-1. Integrate SDC data (`merge_SDC.py`)
-- **Objective**: combine SDC data (Excel) with Financial Lease data (Stata)
+- **Objective**: combine SDC data (Excel) with Financial Lease data (Stata), excluding any unmatched observations.
 - **Input**: `Stata/Financial_npv_lease20152024.dta`, `Input/Calculated_All_countries_SDC_2015-2024.xlsx`
 - **Output**: `Stata/IPO_2015_2024.dta`
 #### 1-2. Integrate country-level controls data (`merge_country_level_controls.py`)
