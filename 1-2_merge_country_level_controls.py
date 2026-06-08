@@ -77,7 +77,7 @@ if unmatched > 0:
     unmatched_df = merged_df[merged_df[control_columns[0]].isna()]
     missing_summary = unmatched_df.groupby(['country_code', 'year']).size().reset_index(name='counts')
     
-    missing_txt_path = "missing_country_controls_for_country_year_combinations.txt"
+    missing_txt_path = "1-2_missing_country_controls_for_country_year_combinations.txt"
     missing_summary.to_csv(missing_txt_path, sep='\t', index=False)
     print(f"  [INFO] 已將未匹配的清單（共 {len(missing_summary)} 筆組合）存至 {missing_txt_path}")
 else:
