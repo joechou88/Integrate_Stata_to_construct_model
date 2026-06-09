@@ -2,6 +2,7 @@ import os
 
 # Folder name
 INPUT_DIR = "Input"
+INST_DIR = "INST"
 STATA_DIR = "Stata"
 
 # File name
@@ -13,6 +14,9 @@ STATA_COUNTRY_LEVEL_CONTROLS_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_wit
 IBES_NON_US_INPUT = os.path.join(INPUT_DIR, "ibes_non_us_1983_2025.sas7bdat")
 IBES_US_INPUT = os.path.join(INPUT_DIR, "ibes_us_1983_2025.sas7bdat")
 IBES_INT_INPUT = os.path.join(INPUT_DIR, "ibes_int_1983_2025.sas7bdat")
+OWNER_INFO_INPUT = os.path.join(INPUT_DIR, INST_DIR, "OwnerInfo.sas7bdat")
+OWNER_PRICE_INPUT = os.path.join(INPUT_DIR, INST_DIR, "OwnerPrice_1997_2025.sas7bdat")
+CONSOLIDATED_HOLDINGS_INPUT = os.path.join(INPUT_DIR, INST_DIR, "Type1_1997_2025.sas7bdat")
 STATA_DERIVE_COLUMNS_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_derive_columns.dta")
 
 STATA_AFOL_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_with_AFOL.dta")

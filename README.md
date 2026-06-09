@@ -12,13 +12,14 @@
 - **Solution**: Macroeconomic freedom is highly "rigid" and rarely mutates in the short term. To avoid data distortion caused by the extreme score gap between China and Hong Kong (approx. 50 vs. 90), Hong Kong's 2020 score was directly applied to the 2021–2024 Hong Kong IPO samples.
 - **Sample size**: 3,111 -> 3,110
 #### 1-3. Integrate Financial Analyst Forecast data (`AFOL.py`)
-- **Objective**: Merge the data with average AFOL (from SAS) matching year t to year t, using primary key `country_code` + `fpe_year`. AFOL is considered as country-level control instead of firm-level control since financial analysts typically do not immediately release earnings forecasts at the time of an IPO.
+- **Objective**: Merge the data with average AFOL (from SAS) matching year t to year t, using primary key `country_code` + `fpe_year`.
 - **Input**: `Input/ibes_non_us_1983_2025.sas7bdat`, `Input/ibes_us_1983_2025.sas7bdat`, `Stata/IPO_2015_2024_with_country_level_controls.dta`
 - **Output**: `Stata/IPO_2015_2024_with_AFOL.dta`
+- **Memo**: `AFOL` is considered as country-level control instead of firm-level control since financial analysts typically do not immediately release earnings forecasts at the time of an IPO, thus there should be no `AFOL` data for that firm in that year.
 - **Sample size**: 3,110 -> 3,110
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
 - **Objective**: Merge the data with INST (from SAS) matching year t to year t-1
-- **Input**: `Input/`
+- **Input**: `Input/INST/Consolidated_Holdings_Type_1_1997_2025.sas7bdat`, `Input/INST/Owner_price_1997_2025.sas7bdat`, `Input/INST/`, `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Output**: `Stata/IPO_2015_2024_with_INST.dta`
 - **Sample size**: 3,110 -> 
 #### 2. Derive variables (`derive_columns_in_stata.py`)
