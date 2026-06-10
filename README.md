@@ -20,6 +20,10 @@
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
 - **Objective**: Merge the data with INST (from SAS) by forward-matching the IPO `Issue_Date` to the nearest subsequent quarter-end (`qtrdate`) within 180 days.
 - **Missing Value Rule**:
+  | Missing Status | Interpretation | Action |
+  | :--- | :--- | :--- |
+  | Missing `valueheld`, but `price`, `shrout` present | This company is covered by LSEG Global Ownership, but no institutional investors have reported holdings | Substitute`INST` with 0 |
+  | Missing `price` or `shrout` / Missing SEDOL | This company is not covered by LSEG Global Ownership | Drop the sample |
 - **Input**: `Input/INST/inst_1997_2025.sas7bdat`, `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Output**: `Stata/IPO_2015_2024_with_INST.dta`
 - **Sample size**: 3,110 -> 2,267 (55 missing SEDOL; 788 missing )
