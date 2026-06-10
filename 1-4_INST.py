@@ -37,14 +37,12 @@ print(f"Unmatched count after merging sedol: {unmatched_after} / {total_obs}")
 missing_inst = merged_df[merged_df['inst'].isna()]
 missing_details = missing_inst[['sedol', 'qtrdate', 'valueheld', 'price', 'shrout']].copy()
 missing_details.rename(columns={'qtrdate': 'date'}, inplace=True)
-with open("1-4_missing_INST_firm_details.txt", "w", encoding="utf-8") as f:
-    f.write(missing_details.to_string(index=False))
+missing_details.to_excel("1-4_missing_INST_firm_details.xlsx", index=False)
 
 matched_inst = merged_df[merged_df['inst'].notna()]
 matched_details = matched_inst[['sedol', 'qtrdate', 'valueheld', 'price', 'shrout', 'inst']].copy()
 matched_details.rename(columns={'qtrdate': 'date'}, inplace=True)
-with open("1-4_matched_INST_firm_details.txt", "w", encoding="utf-8") as f:
-    f.write(matched_details.to_string(index=False))
+matched_details.to_excel("1-4_matched_INST_firm_details.xlsx", index=False)
 
 merged_df = merged_df.dropna(subset=['price', 'shrout'])
 

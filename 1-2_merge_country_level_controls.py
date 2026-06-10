@@ -51,7 +51,7 @@ if not hk_2020_economic_freedom.empty:
     control_df.loc[hk_later_mask, 'Economic_Freedom'] = score_val
     print(f"  [INFO] 已將香港 (HK) 2020 年的 Economic_Freedom 分數 ({score_val}) 填入 2021-2024 年，並保留其他變數原始值。")
 
-print("\n讀取 Stata .dta ...")
+print(f"\nLoading {config.SDC_OUTPUT}")
 stata_df = pd.read_stata(config.SDC_OUTPUT)
 stata_df['country_code'] = stata_df['country_code'].astype(str).str.strip()
 stata_df['year'] = pd.to_numeric(stata_df['year'], errors='coerce')

@@ -26,14 +26,14 @@
   | Missing `price` or `shrout` / Missing SEDOL | This company is not covered by LSEG Global Ownership | Drop the sample |
 - **Input**: `Input/INST/inst_1997_2025.sas7bdat`, `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Output**: `Stata/IPO_2015_2024_with_INST.dta`
-- **Sample size**: 3,110 -> 2,267 (55 missing SEDOL; 788 missing )
+- **Sample size**: 3,110 -> 1,184 (55 missing SEDOL; 1,129 missing price or shrout)
 #### 2. Derive variables (`derive_columns_in_stata.py`)
 - **Objective**: 
     - create new variable `Post` based on existing variable `year` in Stata
     - create new variable `Postxhigh_lease` based on the above `Post` and existing variable `high_lease` in Stata
 - **Input**: `Stata/IPO_2015_2024_with_INST.dta`
 - **Output**: `Stata/IPO_2015_2024_with_post_and_interation.dta`
-#### 3-1. Calculate Market_Return and Market_Volatility (`market_return.py`)
+#### 3-1. Calculate Market_Return and Market_Volatility (`market_price.py`)
 - **Objective**: calculate variables below
     - Market_Return: Natural log of 1 plus the market return in that country in the 90 trading days before `Dates: Issue Date`.
     - Market_Volatility: The standard deviation of the market index return over the 21 trading days ( −21, −1) before `Dates: Issue Date`.
