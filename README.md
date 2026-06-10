@@ -35,8 +35,10 @@
 - **Output**: `Stata/IPO_2015_2024_with_post_and_interation.dta`
 #### 3-1. Calculate Market_Return and Market_Volatility (`market_price.py`)
 - **Objective**: calculate variables below
-    - Market_Return: Natural log of 1 plus the market return in that country in the 90 trading days before `Dates: Issue Date`.
-    - Market_Volatility: The standard deviation of the market index return over the 21 trading days ( −21, −1) before `Dates: Issue Date`.
+    - Market_Return = ln(P<sub>t</sub> / P<sub>t-90</sub>), where:
+      - P<sub>t</sub> = market index closing price at `Issue Date` t  
+      - P<sub>t-90</sub> = closing price 90 trading days before `Issue Date` t 
+    - Market_Volatility = StdDev(r<sub>t-21</sub>, ..., r<sub>t-1</sub>), where r<sub>t-n</sub> = market return n day before `Issue Date` t, calculated as (P<sub>t</sub> - P<sub>t-1</sub>) / P<sub>t-1</sub>
 - **Input**: `Input/compustat_market_price_2015_2024_with_country_code.csv`, `Stata/IPO_2015_2024_with_post_and_interation.dta`
 - **Output**: `Stata/IPO_2015_2024_with_market_return_and_volatility.dta`
 - **Sample size**:  -> 
