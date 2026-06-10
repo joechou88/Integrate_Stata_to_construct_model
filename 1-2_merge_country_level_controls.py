@@ -52,7 +52,7 @@ if not hk_2020_economic_freedom.empty:
     print(f"  [INFO] 已將香港 (HK) 2020 年的 Economic_Freedom 分數 ({score_val}) 填入 2021-2024 年，並保留其他變數原始值。")
 
 print("\n讀取 Stata .dta ...")
-stata_df = pd.read_stata(config.STATA_SDC_OUTPUT)
+stata_df = pd.read_stata(config.SDC_OUTPUT)
 stata_df['country_code'] = stata_df['country_code'].astype(str).str.strip()
 stata_df['year'] = pd.to_numeric(stata_df['year'], errors='coerce')
 total_obs = len(stata_df)
@@ -91,7 +91,7 @@ if len(merged_df) > total_obs:
         "請檢查 Excel 是否有非唯一的 [country_code + year] 組合。"
     )
 
-output_path = config.STATA_COUNTRY_LEVEL_CONTROLS_OUTPUT
+output_path = config.COUNTRY_LEVEL_CONTROLS_OUTPUT
 merged_df.to_stata(output_path, write_index=False)
 
 print(f"\n[OK] 完成！成功寫出 {len(merged_df)} 筆資料至 {output_path}")

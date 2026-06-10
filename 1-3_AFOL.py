@@ -4,7 +4,7 @@ import config
 ibes_non_us = pd.read_sas(config.IBES_NON_US_INPUT, encoding="latin1")
 ibes_us = pd.read_sas(config.IBES_US_INPUT, encoding="latin1")
 ibes_int = pd.read_sas(config.IBES_INT_INPUT, encoding="latin1")
-stata_df = pd.read_stata(config.STATA_COUNTRY_LEVEL_CONTROLS_OUTPUT)
+stata_df = pd.read_stata(config.COUNTRY_LEVEL_CONTROLS_OUTPUT)
 ibes_df = pd.concat([ibes_us, ibes_non_us, ibes_int], ignore_index=True)
 
 stata_df['country'] = stata_df['country'].astype(str).str.strip()
@@ -47,7 +47,7 @@ with open("1-3_matched_AFOL_for_country_year_combinations.txt", "w", encoding="u
 if 'is_merged' in merged_df.columns:
     merged_df = merged_df.drop(columns=['is_merged'])
 
-output_filename = config.STATA_AFOL_OUTPUT
+output_filename = config.AFOL_OUTPUT
 merged_df.to_stata(output_filename, write_index=False)
 
 print(f"原始 Stata 行數: {total_obs}")

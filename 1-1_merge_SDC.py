@@ -2,7 +2,7 @@ import pandas as pd
 import config
 
 sdc_df = pd.read_excel(config.SDC_INPUT)
-stata_df = pd.read_stata(config.STATA_INPUT).copy()
+stata_df = pd.read_stata(config.WORLDSCOPE_FUNDAMENTALS_INPUT).copy()
 
 id_column_mapping = {
     'dscd': 'Datastream',
@@ -100,7 +100,7 @@ for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
     if col in sdc_data:
         merged_df.insert(min(idx, len(merged_df.columns)), col, sdc_data[col])
 
-output_filename = config.STATA_SDC_OUTPUT
+output_filename = config.SDC_OUTPUT
 merged_df.to_stata(output_filename, write_index=False)
 
 print(f"原始 Stata 行數: {total_obs}")

@@ -5,7 +5,7 @@ import warnings
 
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 
-input_path = config.STATA_INST_OUTPUT
+input_path = config.INST_OUTPUT
 print(f"Reading data from {input_path}...")
 df = pd.read_stata(input_path)
 
@@ -26,7 +26,7 @@ for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
 
 df = df.copy()
 
-output_path = config.STATA_DERIVE_COLUMNS_OUTPUT
+output_path = config.DERIVE_COLUMNS_OUTPUT
 print(f"Saving to {output_path}...")
 
 try:

@@ -1,9 +1,9 @@
 import pandas as pd
 import config
 
-print(f"Loading datasets {config.SAS_INST_INPUT}, {config.STATA_AFOL_OUTPUT}")
-inst_df = pd.read_sas(config.SAS_INST_INPUT, encoding="latin1")
-stata_df = pd.read_stata(config.STATA_AFOL_OUTPUT)
+print(f"Loading datasets {config.INST_INPUT}, {config.AFOL_OUTPUT}")
+inst_df = pd.read_sas(config.INST_INPUT, encoding="latin1")
+stata_df = pd.read_stata(config.AFOL_OUTPUT)
 
 inst_df.columns = inst_df.columns.str.lower()
 
@@ -57,7 +57,7 @@ merged_df['Issue_Date'] = merged_df['Issue_Date'].dt.strftime('%Y-%m-%d')
 columns_to_drop = ['is_merged', 'qtrdate', 'valueheld', 'price', 'shrout']
 merged_df = merged_df.drop(columns=[col for col in columns_to_drop if col in merged_df.columns])
 
-output_filename = config.STATA_INST_OUTPUT
+output_filename = config.INST_OUTPUT
 merged_df.to_stata(output_filename, write_index=False)
 
 print(f"Original Stata row count: {total_obs}")
