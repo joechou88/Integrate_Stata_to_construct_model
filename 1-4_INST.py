@@ -1,76 +1,60 @@
 import pandas as pd
 import config
 
-print(f"Loading datasets {config.OWNER_INFO_INPUT}, {config.CONSOLIDATED_HOLDINGS_INPUT}, {config.OWNER_PRICE_INPUT}, {config.STATA_AFOL_OUTPUT}")
-owner_info = pd.read_sas(config.OWNER_INFO_INPUT, encoding="latin1")
-owner_price = pd.read_sas(config.OWNER_PRICE_INPUT, encoding="latin1")
-holdings = pd.read_sas(config.CONSOLIDATED_HOLDINGS_INPUT, encoding="latin1")
+print(f"Loading datasets {config.SAS_INST_INPUT}, {config.STATA_AFOL_OUTPUT}")
+inst_df = pd.read_sas(config.SAS_INST_INPUT, encoding="latin1")
 stata_df = pd.read_stata(config.STATA_AFOL_OUTPUT)
 
+inst_df.columns = inst_df.columns.str.lower()
+
+print("Merging INST into Stata dataset...")
+
 stata_df['sedol'] = stata_df['sedol'].astype(str).str.strip()
-stata_df['Issue_Date'] = pd.to_datetime(stata_df['Issue_Date'])
+stata_df['Issue_Date'] = pd.to_datetime(stata_df['Issue_Date']).astype('datetime64[ns]')
 
-print("Step 1: Filtering for pure institutional investors...")
-merged_holdings = pd.merge(holdings, owner_info, on='ownercode', how='left')
-merged_holdings['owntypecode'] = pd.to_numeric(merged_holdings['owntypecode'], errors='coerce')
-strategic_codes = [301, 302, 303, 304]
-pure_inst_holdings = merged_holdings[~merged_holdings['owntypecode'].isin(strategic_codes)].copy()
-
-print("Step 2: Calculating INST numerator (Value held by institutional investors)...")
-# Get issuercode from owner_price using securitycode
-security_issuer_mapping = owner_price[['securitycode', 'issuercode']].dropna().drop_duplicates()
-pure_inst_holdings = pd.merge(pure_inst_holdings, security_issuer_mapping, on='securitycode', how='left')
-
-inst_numerator = pure_inst_holdings.groupby(['issuercode', 'qtrdate'])['valueheld'].sum().reset_index()
-inst_numerator.rename(columns={'valueheld': 'total_valueheld'}, inplace=True)
-
-print("Step 3: Calculating INST denominator (Market Cap)...")
-owner_price['marketcap_temp'] = owner_price['price'] * owner_price['shrout']
-inst_denominator = owner_price.groupby(['issuercode', 'date'])['marketcap_temp'].max().reset_index()
-inst_denominator.rename(columns={'marketcap_temp': 'marketcap'}, inplace=True)
-
-print("Step 4: Calculating INST...")
-inst_denominator.rename(columns={'date': 'qtrdate'}, inplace=True)
-inst_df = pd.merge(inst_numerator, inst_denominator, on=['issuercode', 'qtrdate'], how='inner')
-inst_df['INST'] = inst_df['total_valueheld'] / inst_df['marketcap']
-
-print("Step 5: Merging INST into Stata dataset...")
-sedol_mapping = owner_price[['issuercode', 'sedol']].dropna().drop_duplicates()
-inst_df = pd.merge(inst_df, sedol_mapping, on='issuercode', how='left')
 inst_df['sedol'] = inst_df['sedol'].astype(str).str.strip()
-inst_df['qtrdate'] = pd.to_datetime(inst_df['qtrdate'])
+inst_df['qtrdate'] = pd.to_datetime(inst_df['qtrdate']).astype('datetime64[ns]')
 
 stata_df_sorted = stata_df.sort_values('Issue_Date')
 inst_df_sorted = inst_df.dropna(subset=['sedol', 'qtrdate']).sort_values('qtrdate')
 
 merged_df = pd.merge_asof(
     stata_df_sorted,
-    inst_df_sorted[['sedol', 'qtrdate', 'INST']],
+    inst_df_sorted[['sedol', 'qtrdate', 'valueheld', 'price', 'shrout', 'inst']],
     left_on='Issue_Date',
     right_on='qtrdate',
     by='sedol',
-    direction='forward'
+    direction='forward',
+    tolerance=pd.Timedelta(days=180) # 往未來找最近的一個季底，但最多只找 180 天
 )
 
-merged_df['is_merged'] = merged_df['INST'].notna()
+merged_df['is_merged'] = merged_df['inst'].notna()
 total_obs = len(stata_df)
 unmatched_after = (~merged_df['is_merged']).sum()
 merged_count = merged_df['is_merged'].sum()
 
 print(f"Unmatched count after merging sedol: {unmatched_after} / {total_obs}")
-missing_inst = merged_df[merged_df['INST'].isna()]
-missing_counts = missing_inst.groupby(['sedol']).size().reset_index(name='Missing_INST_Count')
-missing_counts = missing_counts.sort_values(by=['sedol'])
-with open("1-4_missing_INST.txt", "w", encoding="utf-8") as f:
-    f.write(missing_counts.to_string(index=False))
+missing_inst = merged_df[merged_df['inst'].isna()]
+missing_details = missing_inst[['sedol', 'qtrdate', 'valueheld', 'price', 'shrout']].copy()
+missing_details.rename(columns={'qtrdate': 'date'}, inplace=True)
+with open("1-4_missing_INST_firm_details.txt", "w", encoding="utf-8") as f:
+    f.write(missing_details.to_string(index=False))
 
-matched_inst = merged_df[merged_df['INST'].notna()]
-matched_counts = matched_inst.groupby(['sedol']).size().reset_index(name='Matched_INST_Count')
-matched_counts = matched_counts.sort_values(by=['sedol'])
-with open("1-4_matched_INST.txt", "w", encoding="utf-8") as f:
-    f.write(matched_counts.to_string(index=False))
+matched_inst = merged_df[merged_df['inst'].notna()]
+matched_details = matched_inst[['sedol', 'qtrdate', 'valueheld', 'price', 'shrout', 'inst']].copy()
+matched_details.rename(columns={'qtrdate': 'date'}, inplace=True)
+with open("1-4_matched_INST_firm_details.txt", "w", encoding="utf-8") as f:
+    f.write(matched_details.to_string(index=False))
 
-columns_to_drop = ['is_merged']
+merged_df = merged_df.dropna(subset=['price', 'shrout'])
+
+# 若 price / shrout 有，但 valueheld 缺 -> 代表純機構持股為 0，補 0
+merged_df['valueheld'] = merged_df['valueheld'].fillna(0)
+merged_df['inst'] = merged_df['inst'].fillna(0)
+
+merged_df.rename(columns={'inst': 'INST'}, inplace=True)
+merged_df['Issue_Date'] = merged_df['Issue_Date'].dt.strftime('%Y-%m-%d')
+columns_to_drop = ['is_merged', 'qtrdate', 'valueheld', 'price', 'shrout']
 merged_df = merged_df.drop(columns=[col for col in columns_to_drop if col in merged_df.columns])
 
 output_filename = config.STATA_INST_OUTPUT

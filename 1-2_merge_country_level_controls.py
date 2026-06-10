@@ -80,10 +80,12 @@ if unmatched > 0:
     missing_txt_path = "1-2_missing_country_controls_for_country_year_combinations.txt"
     missing_summary.to_csv(missing_txt_path, sep='\t', index=False)
     print(f"  [INFO] 已將未匹配的清單（共 {len(missing_summary)} 筆組合）存至 {missing_txt_path}")
+    merged_df = merged_df.dropna(subset=[control_columns[0]])
+    print(f"  [INFO] 已將 {unmatched} 筆未匹配資料從合併結果中剔除。")
 else:
     print("  [INFO] 所有資料皆完美匹配，未產生 missing 清單。")
 
-if len(merged_df) != total_obs:
+if len(merged_df) > total_obs:
     raise RuntimeError(
         f"合併後行數 ({len(merged_df)}) 不等於原始行數 ({total_obs})，"
         "請檢查 Excel 是否有非唯一的 [country_code + year] 組合。"

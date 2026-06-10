@@ -18,10 +18,11 @@
 - **Memo**: `AFOL` is considered as country-level control instead of firm-level control since financial analysts typically do not immediately release earnings forecasts at the time of an IPO, thus there should be no `AFOL` data for that firm in that year.
 - **Sample size**: 3,110 -> 3,110
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
-- **Objective**: Merge the data with INST (from SAS) matching year t to year t-1
-- **Input**: `Input/INST/Consolidated_Holdings_Type_1_1997_2025.sas7bdat`, `Input/INST/Owner_price_1997_2025.sas7bdat`, `Input/INST/`, `Stata/IPO_2015_2024_with_AFOL.dta`
+- **Objective**: Merge the data with INST (from SAS) by forward-matching the IPO `Issue_Date` to the nearest subsequent quarter-end (`qtrdate`) within 180 days.
+- **Missing Value Rule**:
+- **Input**: `Input/INST/inst_1997_2025.sas7bdat`, `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Output**: `Stata/IPO_2015_2024_with_INST.dta`
-- **Sample size**: 3,110 -> 
+- **Sample size**: 3,110 -> 2,267 (55 missing SEDOL; 788 missing )
 #### 2. Derive variables (`derive_columns_in_stata.py`)
 - **Objective**: 
     - create new variable `Post` based on existing variable `year` in Stata
