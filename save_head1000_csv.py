@@ -3,8 +3,9 @@ import os
 import config
 
 input_files = [
-    config.MARKET_PRICE_INPUT,
-    config.SECURITY_PRICE_INPUT
+    # config.MARKET_PRICE_INPUT,
+    # config.SECURITY_PRICE_INPUT,
+    config.WORLDSCOPE_FUNDAMENTALS_INPUT
 ]
 
 for input_file in input_files:

@@ -10,11 +10,13 @@ print(f"Reading data from {input_path}...")
 df = pd.read_stata(input_path)
 
 df['Post'] = np.where((df['year'] - 1) > 2018, 1, 0)
-df['Postxhigh_lease'] = df['Post'] * df['high_lease']
+df['PostxHigh_Lease'] = df['Post'] * df['high_lease']
+df = df.rename(columns={'high_lease': 'High_Lease'})
 
 insert_map = {
     'Post': 22,
-    'Postxhigh_lease': 23
+    'High_Lease': 23,
+    'PostxHigh_Lease': 24
 }
 
 for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):

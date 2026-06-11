@@ -2,7 +2,7 @@ import pandas as pd
 import config
 
 sdc_df = pd.read_excel(config.SDC_INPUT)
-stata_df = pd.read_stata(config.WORLDSCOPE_FUNDAMENTALS_INPUT).copy()
+stata_df = pd.read_stata(config.OPERATING_LEASE_NPV_INPUT).copy()
 
 id_column_mapping = {
     'dscd': 'Datastream',

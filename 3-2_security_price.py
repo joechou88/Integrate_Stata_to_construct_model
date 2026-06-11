@@ -46,6 +46,7 @@ total_count = len(merged_df)
 print(f"Number of firms missing Underpricing: {missing_count} / {total_count}")
 
 merged_df = merged_df.drop(columns=['_row_id', 'datadate', 'prccd'], errors='ignore')
+merged_df['Issue_Date'] = merged_df['Issue_Date'].dt.strftime('%Y-%m-%d')
 
 output_path = config.SECURITY_PRICE_OUTPUT
 merged_df.to_stata(output_path, write_index=False)
