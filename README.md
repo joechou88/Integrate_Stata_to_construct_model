@@ -36,15 +36,17 @@
 #### 3-1. Calculate Market_Return and Market_Volatility (`market_price.py`)
 - **Objective**: calculate variables below
     - Market_Return = ln(P<sub>t-1</sub> / P<sub>t-91</sub>), where:
-      - P<sub>t-1</sub> = market closing price one trading day before `Issue Date` t  
-      - P<sub>t-91</sub> = market closing price 91 trading days before `Issue Date` t 
+      - P<sub>t-1</sub> = market closing price one trading day before `Issue_Date` t  
+      - P<sub>t-91</sub> = market closing price 91 trading days before `Issue_Date` t 
     - Market_Volatility = StdDev(r<sub>t-21</sub>, ..., r<sub>t-1</sub>), where r<sub>t-n</sub> = market return n day before `Issue Date` t, calculated as (P<sub>t</sub> - P<sub>t-1</sub>) / P<sub>t-1</sub>
 - **Input**: `Input/compustat_market_price_2015_2024_with_country_code.csv`, `Stata/IPO_2015_2024_with_post_and_interation.dta`
 - **Output**: `Stata/IPO_2015_2024_with_market_return_and_volatility.dta`
 - **Sample size**:  -> 
 #### 3-2. Calculate IPO Underpricing (`security_price.py`)
 - **Objective**: calculate variables below
-    - Underpricing: First-day market closing price of an IPO minus its `Offer Price (USD)`, scaled by `Offer Price (USD)`.
+    - Underpricing = (P<sub>t</sub> - P<sub>offer</sub>) / P<sub>offer</sub>, where:
+      - P<sub>t</sub> = the first valid market closing price (from Compustat) of an IPO within a $[-3, +60]$ day window around the `Issue_Date` t (from SDC), prioritizing the exact issue date, followed by the closest subsequent day, and lastly the closest preceding day.
+      - P<sub>offer</sub> = `Offer_Price_USD` of the IPO (from SDC)
 - **Input**: `Input/compustat_security_daily_price_2015_2024.csv`, `Stata/IPO_2015_2024_with_market_return_and_volatility.dta`
 - **Output**: `Stata/IPO_2015_2024_with_IPO_Underpricing.dta`
 - **Sample size**:  -> 
