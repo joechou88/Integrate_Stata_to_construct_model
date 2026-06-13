@@ -60,6 +60,7 @@ for col in stata_df.columns:
 merged_count = merged_df['is_merged'].notna().sum()
 merged_df = merged_df.drop(columns=['is_merged']).copy()
 
+merged_df['WS_country'] = merged_df['country']
 # Update country codes based on SDC 'Country'
 merged_df['country'] = merged_df['Country']
 country_replacements = {
@@ -87,6 +88,7 @@ for col in added_columns:
 
 merged_df.columns = [c.replace(' ', '_').replace('/', '_').replace('-', '_').replace(':', '') for c in merged_df.columns]
 original_stata_cols = [c for c in stata_df.columns if c in merged_df.columns]
+original_stata_cols.insert(original_stata_cols.index('country'), 'WS_country')
 merged_df = merged_df[original_stata_cols].copy()
 
 insert_map = {
