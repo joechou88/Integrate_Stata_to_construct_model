@@ -13,6 +13,7 @@ merged_df = stata_df.merge(
     right_on=['COUNTRY_CODE2', 'YEAR'], 
     how='left'
 )
+print(merged_df[['country','country_code2', 'year', 'IPO_count', 'listed_equities']].dropna().head(10))
 merged_df['IPO_count'] = np.log(merged_df['IPO_count'] / merged_df['listed_equities'])
 merged_df.rename(columns={'IPO_count': 'IPO_Activities'}, inplace=True)
 merged_df.drop(columns=['COUNTRY_CODE2', 'YEAR', 'listed_equities'], inplace=True, errors='ignore')

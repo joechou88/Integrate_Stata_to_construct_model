@@ -3,6 +3,7 @@ import config
 
 sdc_df = pd.read_excel(config.SDC_INPUT)
 stata_df = pd.read_stata(config.OPERATING_LEASE_NPV_INPUT).copy()
+country_code_df = pd.read_excel(config.COUNTRY_CODE_INPUT)
 
 id_column_mapping = {
     'dscd': 'Datastream',
@@ -23,44 +24,53 @@ stata_by_isin = stata_df.dropna(subset=['isin']).drop_duplicates(subset=['isin',
 stata_by_sedol = stata_df.dropna(subset=['sedol']).drop_duplicates(subset=['sedol', 'year'])
 total_obs = len(sdc_df)
 
-# 第一輪：DSCD + Year
+# Round 1: DSCD + Year
 merged_df = pd.merge(sdc_df, stata_by_dscd, on=['dscd', 'year'], how='left', suffixes=('', '_stata'))
 unmatched_after_dscd = merged_df['is_merged'].isna().sum()
-print(f"1. DSCD+Year 合併後，未匹配數量: {unmatched_after_dscd} / {total_obs}")
+print(f"1. Unmatched after DSCD+Year: {unmatched_after_dscd} / {total_obs}")
 
-# 第二輪：ISIN + Year
+# Round 2: ISIN + Year
 unmatched = merged_df['is_merged'].isna()
 if unmatched.any():
     unmatched_part = merged_df[unmatched][sdc_df.columns]
     rematched_isin = pd.merge(unmatched_part, stata_by_isin, on=['isin', 'year'], how='left', suffixes=('', '_stata'))
     rematched_isin.index = unmatched_part.index
     merged_df.update(rematched_isin)
-
 unmatched_after_isin = merged_df['is_merged'].isna().sum()
-print(f"2. ISIN+Year 合併後，未匹配數量: {unmatched_after_isin} / {total_obs}")
+print(f"2. Unmatched after ISIN+Year: {unmatched_after_isin} / {total_obs}")
 
-# 第三輪：SEDOL + Year
+# Round 3: SEDOL + Year
 unmatched = merged_df['is_merged'].isna()
 if unmatched.any():
-    unmatched_part_sedol = merged_df[unmatched][sdc_df.columns]
-    unmatched_part_sedol = unmatched_part_sedol.dropna(subset=['sedol'])
+    unmatched_part_sedol = merged_df[unmatched][sdc_df.columns].dropna(subset=['sedol'])
     rematched_sedol = pd.merge(unmatched_part_sedol, stata_by_sedol, on=['sedol', 'year'], how='left', suffixes=('', '_stata'))
     rematched_sedol.index = unmatched_part_sedol.index
     merged_df.update(rematched_sedol)
-
 unmatched_after_sedol = merged_df['is_merged'].isna().sum()
-print(f"3. SEDOL+Year 合併後，最終未匹配數量: {unmatched_after_sedol} / {total_obs}")
+print(f"3. Unmatched after SEDOL+Year: {unmatched_after_sedol} / {total_obs}")
 
+# For overlapping columns (excluding dscd, isin, sedol, and year), prioritize Stata data over SDC.
 for col in stata_df.columns:
     if f"{col}_stata" in merged_df.columns:
-        merged_df[col] = merged_df[f"{col}_stata"]
-        merged_df = merged_df.drop(columns=[f"{col}_stata"])
+        if col not in ['dscd', 'isin', 'sedol', 'year']:
+            merged_df[col] = merged_df[f"{col}_stata"]
+            merged_df = merged_df.drop(columns=[f"{col}_stata"])
 
+# Keep all SDC rows, instead of dropping unmatched rows.
 merged_count = merged_df['is_merged'].notna().sum()
-merged_df = merged_df[merged_df['is_merged'].notna()].copy() # 沒有合併上的 record 就 drop 掉
+merged_df = merged_df.drop(columns=['is_merged']).copy()
 
-if 'is_merged' in merged_df.columns:
-    merged_df = merged_df.drop(columns=['is_merged'])
+# Update country codes based on SDC 'Country'
+merged_df['country'] = merged_df['Country']
+country_replacements = {
+    'Hong-Kong': 'Hong Kong',
+    'New-Zealand': 'New Zealand',
+    'South-Korea': 'South Korea',
+    'United-Kingdom': 'UK'
+}
+merged_df['country'] = merged_df['country'].replace(country_replacements)
+merged_df['country_code'] = merged_df['country'].map(country_code_df.set_index('Country_name')['Country_code'])
+merged_df['country_code2'] = merged_df['country'].map(country_code_df.set_index('Country_name')['Country_code2'])
 
 added_columns = [
     'Underpricing', 'Ln_Age', 'VC_backed', 'Relative_Offer_Size',
@@ -103,7 +113,7 @@ for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
 output_filename = config.SDC_OUTPUT
 merged_df.to_stata(output_filename, write_index=False)
 
-print(f"原始 Stata 行數: {total_obs}")
-print(f"合併後總行數: {len(merged_df)}")
-print(f"成功匹配樣本數量: {merged_count}")
-print(f"成功導出至: {output_filename}")
+print(f"Total SDC rows to map: {total_obs}")
+print(f"Successfully matched: {merged_count}")
+print(f"Final exported rows: {len(merged_df)}")
+print(f"Exported to: {output_filename}")

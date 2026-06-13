@@ -10,6 +10,7 @@ STATA_DIR = "Stata"
 # File name
 OPERATING_LEASE_NPV_INPUT = os.path.join(STATA_DIR, "Financial_npv_lease20152024.dta")
 SDC_INPUT = os.path.join(INPUT_DIR, "Calculated_All_countries_SDC_2015-2024.xlsx")
+COUNTRY_CODE_INPUT = os.path.join(INPUT_DIR, "country_code.xlsx")
 COUNTRY_LEVEL_CONTROLS_INPUT = os.path.join(INPUT_DIR, "country_controls.xlsx")
 IBES_NON_US_INPUT = os.path.join(INPUT_DIR, AFOL_DIR, "ibes_non_us_1983_2025.sas7bdat")
 IBES_US_INPUT = os.path.join(INPUT_DIR, AFOL_DIR, "ibes_us_1983_2025.sas7bdat")

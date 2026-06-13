@@ -44,8 +44,6 @@ matched_details = matched_inst[['sedol', 'qtrdate', 'valueheld', 'price', 'shrou
 matched_details.rename(columns={'qtrdate': 'date'}, inplace=True)
 matched_details.to_excel("1-4_matched_INST_firm_details.xlsx", index=False)
 
-merged_df = merged_df.dropna(subset=['price', 'shrout'])
-
 # 若 price / shrout 有，但 valueheld 缺 -> 代表純機構持股為 0，補 0
 merged_df['valueheld'] = merged_df['valueheld'].fillna(0)
 merged_df['inst'] = merged_df['inst'].fillna(0)
