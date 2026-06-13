@@ -1,6 +1,6 @@
 ## Python Scripts
 #### 1-1. Integrate SDC data (`merge_SDC.py`)
-- **Objective**: combine SDC data (Excel) with Financial Lease data (Stata), excluding any unmatched observations.
+- **Objective**: combine SDC data (Excel) with Financial Lease data (Stata), keeping all SDC records instead of dropping unmatched rows.
 - **Input**: `Stata/Financial_npv_lease20152024.dta`, `Input/Calculated_All_countries_SDC_2015-2024.xlsx`
 - **Output**: `Stata/IPO_2015_2024.dta`
 - **Sample size**: 4,818 -> 3,111 
