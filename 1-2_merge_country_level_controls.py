@@ -48,5 +48,5 @@ output_path = config.COUNTRY_LEVEL_CONTROLS_OUTPUT
 merged_df.to_stata(output_path, write_index=False)
 merged_count = merged_df[control_columns[0]].notna().sum()
 
-print(f"A total of {len(merged_df)} rows were exported. This includes {merged_count} successful matches, along with the remaining unmapped rows.")
+print(f"A total of {len(merged_df)} rows were exported. This includes {merged_count} successful matches, along with {len(merged_df) - merged_count} unmapped rows.")
 print(f"Exported to: {output_path}")

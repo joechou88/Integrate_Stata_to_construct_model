@@ -117,5 +117,5 @@ for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
 output_path = config.SDC_OUTPUT
 merged_df.to_stata(output_path, write_index=False)
 
-print(f"A total of {len(merged_df)} rows were exported. This includes {merged_count} successful matches, along with the remaining unmapped rows.")
+print(f"A total of {len(merged_df)} rows were exported. This includes {merged_count} successful matches, along with {len(merged_df) - merged_count} unmapped rows.")
 print(f"Exported to: {output_path}")
