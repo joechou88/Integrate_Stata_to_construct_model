@@ -114,8 +114,8 @@ for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
     if col in sdc_data:
         merged_df.insert(min(idx, len(merged_df.columns)), col, sdc_data[col])
 
-output_filename = config.SDC_OUTPUT
-merged_df.to_stata(output_filename, write_index=False)
+output_path = config.SDC_OUTPUT
+merged_df.to_stata(output_path, write_index=False)
 
 print(f"A total of {len(merged_df)} rows were exported. This includes {merged_count} successful matches, along with the remaining unmapped rows.")
-print(f"Exported to: {output_filename}")
+print(f"Exported to: {output_path}")
