@@ -18,7 +18,7 @@
 - **Memo**: `AFOL` is considered as country-level control instead of firm-level control since financial analysts typically do not immediately release earnings forecasts at the time of an IPO, thus there should be no `AFOL` data for that firm in that year.
 - **Sample size**: 3,110 -> 3,110
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
-- **Objective**: Merge the data with INST (from SAS) by forward-matching the IPO `Issue_Date` to the nearest subsequent quarter-end (`qtrdate`) within 180 days.
+- **Objective**: Merge the data with INST (from SAS) by forward-matching the IPO `Issue_Date` to the nearest subsequent quarter-end (`qtrdate`) within 180 days. We prioritize the nearest quarter-end where `valueheld`, `price`, and `shrout` are all simultaneously observable.
 - **Missing Value Rule**:
   | Missing Status | Interpretation | Action |
   | :--- | :--- | :--- |
