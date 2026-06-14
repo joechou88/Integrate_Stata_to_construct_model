@@ -1,6 +1,7 @@
 import pandas as pd
 import config
 
+print(f"Loading datasets:\n  - {config.SDC_INPUT}\n  - {config.OPERATING_LEASE_NPV_INPUT}\n  - {config.COUNTRY_CODE_INPUT}")
 sdc_df = pd.read_excel(config.SDC_INPUT)
 stata_df = pd.read_stata(config.OPERATING_LEASE_NPV_INPUT).copy()
 country_code_df = pd.read_excel(config.COUNTRY_CODE_INPUT)
@@ -23,6 +24,7 @@ stata_by_dscd = stata_df.dropna(subset=['dscd']).drop_duplicates(subset=['dscd',
 stata_by_isin = stata_df.dropna(subset=['isin']).drop_duplicates(subset=['isin', 'year'])
 stata_by_sedol = stata_df.dropna(subset=['sedol']).drop_duplicates(subset=['sedol', 'year'])
 total_obs = len(sdc_df)
+print(f"Original SDC rows in {config.SDC_INPUT}: {total_obs}")
 
 # Round 1: DSCD + Year
 merged_df = pd.merge(sdc_df, stata_by_dscd, on=['dscd', 'year'], how='left', suffixes=('', '_stata'))
@@ -115,7 +117,5 @@ for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
 output_filename = config.SDC_OUTPUT
 merged_df.to_stata(output_filename, write_index=False)
 
-print(f"Total SDC rows to map: {total_obs}")
-print(f"Successfully matched: {merged_count}")
-print(f"Final exported rows: {len(merged_df)}")
+print(f"A total of {len(merged_df)} rows were exported. This includes {merged_count} successful matches, along with the remaining unmapped rows.")
 print(f"Exported to: {output_filename}")
