@@ -62,7 +62,7 @@
 - **Input**: `Stata/IPO_2015_2024_with_IPO_Underpricing.dta`
 - **Output**: `Stata/IPO_2015_2024_filtered.dta`
 ---
-#### Country and Stock Index Reference Table for Beta (Field 09802)
+#### Country and Stock Index Reference Table
 Worldscope(DataStream) Variable Definitions (2023): https://drive.google.com/file/d/1ZE9ln7Hpz22WhWdok19RgPY0qKA8y-DU/view?usp=drive_link
 | Country | Stock Index |
 | :--- | :--- |
