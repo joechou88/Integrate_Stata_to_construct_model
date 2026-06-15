@@ -16,7 +16,7 @@
 - **Input**: `Input/ibes_non_us_1983_2025.sas7bdat`, `Input/ibes_us_1983_2025.sas7bdat`, `Stata/IPO_2015_2024_with_country_level_controls.dta`
 - **Output**: `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Memo**: `AFOL` is considered as country-level control instead of firm-level control since financial analysts typically do not immediately release earnings forecasts at the time of an IPO, thus there should be no `AFOL` data for that firm in that year.
-- **Sample size**: 3,110 -> 3,110
+- **Sample size**: A total of 4818 rows were exported. This includes 4818 successful matches, along with 0 unmapped rows.
 #### 1-4. Integrate Institutional Ownership data (`INST.py`)
 - **Objective**: Merge the data with INST (from SAS) by forward-matching the IPO `Issue_Date` to the nearest subsequent quarter-end (`qtrdate`) within 180 days. We prioritize the nearest quarter-end where `valueheld`, `price`, and `shrout` are all simultaneously observable.
 - **Missing Value Rule**:
@@ -26,7 +26,7 @@
   | Missing `price` or `shrout` / Missing SEDOL | This company is not covered by LSEG Global Ownership | Drop the sample |
 - **Input**: `Input/INST/inst_1997_2025.sas7bdat`, `Stata/IPO_2015_2024_with_AFOL.dta`
 - **Output**: `Stata/IPO_2015_2024_with_INST.dta`
-- **Sample size**: 3,110 -> 1,184 (55 missing SEDOL; 1,129 missing price or shrout)
+- **Sample size**: A total of 4818 rows were exported. This includes 4385 successful matches, along with 433 unmapped rows.
 #### 2. Derive variables (`derive_columns_in_stata.py`)
 - **Objective**: 
     - create new variable `Post` based on existing variable `year` in Stata
@@ -41,6 +41,10 @@
     - Market_Volatility = StdDev(r<sub>t-21</sub>, ..., r<sub>t-1</sub>), where r<sub>t-n</sub> = market return n day before `Issue Date` t, calculated as (P<sub>t</sub> - P<sub>t-1</sub>) / P<sub>t-1</sub>
 - **Input**: `Input/compustat_market_price_2015_2024_with_country_code.csv`, `Stata/IPO_2015_2024_with_post_and_interation.dta`
 - **Output**: `Stata/IPO_2015_2024_with_market_return_and_volatility.dta`
+- **Problem**: We should use `Stock Index` listed in Worldscope definition. If the exact `Stock Index` cannot be found in Compustat dataset, we select the best available alternative from the existing indices.
+  | Country | Worldscope listed Stock Index | Best available alternative |
+  | :--- | :--- | :--- |
+  | Canada | S&P/TSX Composite Index | MSCI - Canada Index |
 - **Sample size**:  -> 
 #### 3-2. Calculate IPO Underpricing (`security_price.py`)
 - **Objective**: calculate variables below
@@ -54,3 +58,45 @@
 - **Objective**: drop unnecessary variables for model 1
 - **Input**: `Stata/IPO_2015_2024_with_IPO_Underpricing.dta`
 - **Output**: `Stata/IPO_2015_2024_filtered.dta`
+
+#### Country and Stock Index Reference Table for Beta (Field 09802)
+Worldscope(DataStream) Variable Definitions (2023): https://drive.google.com/file/d/1ZE9ln7Hpz22WhWdok19RgPY0qKA8y-DU/view?usp=drive_link
+| Country | Stock Index |
+| :--- | :--- |
+| Argentina | Indice MERVAL Argentino |
+| Australia | All Australia Ordinaries |
+| Austria | ATX Austrian Traded Index |
+| Belgium | BEL 20 Index |
+| Brazil | BOVESPA |
+| Canada | S&P/TSX Composite Index |
+| Denmark | Copenhagen KFX Index |
+| Finland | All Share Price Index |
+| France | SBF 250 Index |
+| Germany | HDAX |
+| Greece | Athens Composite Index |
+| Hong Kong | Hang Seng Index |
+| Hungary | BUX Index |
+| Indonesia | Jakarta Composite Price Index |
+| Ireland | SEQ-Overall (Price) |
+| Italy | FTSE Italia All Share |
+| Japan | Nikkei 225 Index |
+| Korea | Korea Composite Index |
+| Malaysia | KLSE Composite Index |
+| Mexico | IPC Index |
+| Netherlands | AEX Index |
+| New Zealand | NZ50 (GRS) |
+| Norway | Oslo Bors Benchmark Index |
+| Philippines | Philippines Composite Index |
+| Poland | Warsaw WIG Index |
+| Portugal | PSI General |
+| Singapore | Straits Times Index |
+| South Africa | Africa All Shares Index |
+| Spain | Madrid Stock Exchange |
+| Sweden | OMX Stock Index |
+| Switzerland | Swiss Market Index |
+| Taiwan | Taiwan Stock Exchange Weighted Index |
+| Thailand | Bangkok Stock Exchange SET Index |
+| Turkey | ISE National 100 |
+| United Kingdom | FT All Share |
+| United States | S&P 500 |
+| Venezuela | IBC General |

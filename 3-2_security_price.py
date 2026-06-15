@@ -14,6 +14,7 @@ valid_dates = stata_df['Issue_Date'].dropna().unique()
 price_subset = security_df[security_df['isin'].isin(valid_isins)].dropna(subset=['prccd']).copy()
 price_subset = price_subset.drop_duplicates(subset=['isin', 'datadate'], keep='last')
 print("\nMerging data to find first valid closing price within [-3, +60] days...")
+stata_df = stata_df.copy()
 stata_df['_row_id'] = np.arange(len(stata_df))
 temp_merge = pd.merge(
     stata_df[['_row_id', 'isin', 'Issue_Date']], 
