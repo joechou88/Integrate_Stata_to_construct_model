@@ -82,7 +82,7 @@ merged_valid_data = pd.merge_asof(
 merged_df = pd.concat([merged_valid_data, missing_dates_data], ignore_index=True)
 merged_df = merged_df.sort_values('original_index')
 
-columns_to_drop = ['original_index', 'country_code', 'target_merge_date', 'data_date']
+columns_to_drop = ['original_index', 'target_merge_date', 'data_date']
 merged_df = merged_df.drop(columns=columns_to_drop, errors='ignore')
 
 output_path = config.MARKET_PRICE_OUTPUT

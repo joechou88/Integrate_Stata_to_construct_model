@@ -48,4 +48,4 @@ merged_df = stata_df[valid_columns].copy()
 
 output_path = config.FILTERED_OUTPUT
 merged_df.to_stata(output_path, write_index=False)
-print(f"\n[OK] Done! Successfully wrote {len(merged_df)} rows to {output_path}")
+print(f"Exported to: {output_path}")

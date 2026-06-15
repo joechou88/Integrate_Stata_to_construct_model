@@ -48,7 +48,7 @@
   | Columbia | IGBC Index | FTSE World Index - Colombia |
   | Italy | FTSE Italia All Share | BCI All-Share Index |
   | Norway | Oslo Bors Benchmark Index | OSE All Share Index |
-- **Sample size**:  -> 
+- **Sample size**: A total of 4818 rows were exported. This includes 4818 successful matches, along with 0 unmapped rows.
 #### 3-2. Calculate IPO Underpricing (`security_price.py`)
 - **Objective**: calculate variables below
     - Underpricing = (P<sub>t</sub> - P<sub>offer</sub>) / P<sub>offer</sub>, where:
@@ -56,7 +56,7 @@
       - P<sub>offer</sub> = `Offer_Price_USD` of the IPO (from SDC)
 - **Input**: `Input/compustat_security_daily_price_2015_2024.csv`, `Stata/IPO_2015_2024_with_market_return_and_volatility.dta`
 - **Output**: `Stata/IPO_2015_2024_with_IPO_Underpricing.dta`
-- **Sample size**:  -> 
+- **Sample size**: A total of 4818 rows were exported. This includes 4197 successful matches, along with 621 unmapped rows.
 #### 4. Column Filtering (`filter.py`)
 - **Objective**: drop unnecessary variables for model 1
 - **Input**: `Stata/IPO_2015_2024_with_IPO_Underpricing.dta`
