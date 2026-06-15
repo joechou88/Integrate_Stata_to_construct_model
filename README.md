@@ -41,10 +41,13 @@
     - Market_Volatility = StdDev(r<sub>t-21</sub>, ..., r<sub>t-1</sub>), where r<sub>t-n</sub> = market return n day before `Issue Date` t, calculated as (P<sub>t</sub> - P<sub>t-1</sub>) / P<sub>t-1</sub>
 - **Input**: `Input/compustat_market_price_2015_2024_with_country_code.csv`, `Stata/IPO_2015_2024_with_post_and_interation.dta`
 - **Output**: `Stata/IPO_2015_2024_with_market_return_and_volatility.dta`
-- **Problem**: We should use `Stock Index` listed in Worldscope definition. If the exact `Stock Index` cannot be found in Compustat dataset, we select the best available alternative from the existing indices.
+- **Problem**: We should use `Stock Index` listed in Worldscope definition. If the exact `Stock Index` cannot be found in Compustat dataset, we select the best available alternative from the existing indices, prioritizing those used in prior literature or those offering broader market coverage.
   | Country | Worldscope listed Stock Index | Best available alternative |
   | :--- | :--- | :--- |
   | Canada | S&P/TSX Composite Index | MSCI - Canada Index |
+  | Columbia | IGBC Index | FTSE World Index - Colombia |
+  | Italy | FTSE Italia All Share | BCI All-Share Index |
+  | Norway | Oslo Bors Benchmark Index | OSE All Share Index |
 - **Sample size**:  -> 
 #### 3-2. Calculate IPO Underpricing (`security_price.py`)
 - **Objective**: calculate variables below
@@ -86,6 +89,8 @@ Worldscope(DataStream) Variable Definitions (2023): https://drive.google.com/fil
 | Netherlands | AEX Index |
 | New Zealand | NZ50 (GRS) |
 | Norway | Oslo Bors Benchmark Index |
+| Pakistan | Pakistan |
+| Peru | IGBVL Index |
 | Philippines | Philippines Composite Index |
 | Poland | Warsaw WIG Index |
 | Portugal | PSI General |
