@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 import config
 
-print(f"Loading datasets:\n  - {config.MARKET_PRICE_INPUT}\n  - {config.DERIVE_COLUMNS_OUTPUT}")
+print(f"Loading datasets:\n  - {config.MARKET_PRICE_INPUT}\n  - {config.RELATIVE_OFFER_SIZE_OUTPUT}")
 market_df = pd.read_csv(config.MARKET_PRICE_INPUT)
-stata_df = pd.read_stata(config.DERIVE_COLUMNS_OUTPUT)
+stata_df = pd.read_stata(config.RELATIVE_OFFER_SIZE_OUTPUT)
 
 market_df['country_code'] = market_df['Country_code'].astype(str).str.strip().str.upper()
 market_df['data_date'] = pd.to_datetime(market_df['datadate'], errors='coerce').dt.tz_localize(None)
