@@ -1,8 +1,8 @@
 import pandas as pd
 import config
 
-print(f"Loading datasets:\n  - {config.OPERATING_LEASE_NPV_INPUT}")
-stata_df = pd.read_stata(config.OPERATING_LEASE_NPV_INPUT).copy()
+print(f"Loading datasets:\n  - {config.LEASE_NPV_OUTPUT_2014_2024}")
+stata_df = pd.read_stata(config.LEASE_NPV_OUTPUT_2014_2024).copy()
 
 stata_df["company_id"] = (
     stata_df["sedol"]
