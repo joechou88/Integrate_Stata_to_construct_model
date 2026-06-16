@@ -8,7 +8,7 @@ COMPUSTAT_DIR = "Compustat"
 STATA_DIR = "Stata"
 
 # File name
-OPERATING_LEASE_NPV_INPUT = os.path.join(STATA_DIR, "Financial_npv_lease20152024_0611.dta")
+OPERATING_LEASE_NPV_INPUT = os.path.join(STATA_DIR, "Financial_npv_lease20152024_0512.dta")
 SDC_INPUT = os.path.join(INPUT_DIR, "Calculated_All_countries_SDC_2015-2024.xlsx")
 COUNTRY_CODE_INPUT = os.path.join(INPUT_DIR, "country_code.xlsx")
 COUNTRY_LEVEL_CONTROLS_INPUT = os.path.join(INPUT_DIR, "country_controls.xlsx")
@@ -21,7 +21,8 @@ MARKET_PRICE_INPUT = os.path.join(INPUT_DIR, COMPUSTAT_DIR, "global_market_price
 SECURITY_PRICE_INPUT = os.path.join(INPUT_DIR, COMPUSTAT_DIR, "global_security_daily_price_2014_2024.csv")
 WORLDSCOPE_FUNDAMENTALS_INPUT = os.path.join(INPUT_DIR, "Worldscope_fundamental_variables.csv")
 
-SDC_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_0611.dta")
+LAG_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_lag_variables.dta")
+SDC_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024.dta")
 COUNTRY_LEVEL_CONTROLS_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_with_country_level_controls.dta")
 AFOL_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_with_AFOL.dta")
 INST_OUTPUT = os.path.join(STATA_DIR, "IPO_2015_2024_with_INST.dta")

@@ -1,9 +1,9 @@
 import pandas as pd
 import config
 
-print(f"Loading datasets:\n  - {config.SDC_INPUT}\n  - {config.OPERATING_LEASE_NPV_INPUT}\n  - {config.COUNTRY_CODE_INPUT}")
+print(f"Loading datasets:\n  - {config.SDC_INPUT}\n  - {config.LAG_OUTPUT}\n  - {config.COUNTRY_CODE_INPUT}")
 sdc_df = pd.read_excel(config.SDC_INPUT)
-stata_df = pd.read_stata(config.OPERATING_LEASE_NPV_INPUT).copy()
+stata_df = pd.read_stata(config.LAG_OUTPUT).copy()
 country_code_df = pd.read_excel(config.COUNTRY_CODE_INPUT)
 
 id_column_mapping = {
