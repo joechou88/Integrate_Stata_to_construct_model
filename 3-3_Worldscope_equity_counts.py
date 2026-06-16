@@ -8,7 +8,7 @@ fundamental_df = pd.read_csv(config.WORLDSCOPE_FUNDAMENTALS_INPUT)
 
 equity_counts = fundamental_df.groupby(['COUNTRY_CODE2', 'YEAR']).size().reset_index(name='listed_equities')
 merged_df = stata_df.merge(
-    equity_counts, 
+    equity_counts,
     left_on=['country_code2', 'year'], 
     right_on=['COUNTRY_CODE2', 'YEAR'], 
     how='left'
