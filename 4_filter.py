@@ -9,8 +9,8 @@ stata_df.rename(columns={'bign': 'BIGN', 'mb': 'MB', 'ln_sales': 'Ln_Sales', 'ca
 ordered_columns = [
     "Underpricing",
     "Post",
-    # "High_Lease", 
-    # "PostxHigh_Lease",
+    # "Lease_Intensity", 
+    # "PostxLease_Intensity",
     "SME_IFRS_adoption",
     "Ln_Age",
     "BIGN",

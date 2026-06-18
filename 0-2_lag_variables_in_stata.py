@@ -11,7 +11,7 @@ stata_df["company_id"] = (
 )
 valid_rows = stata_df["company_id"].notna().sum()
 stata_df = stata_df.sort_values(by=["company_id", "year"])
-columns_to_lag = ["ln_sales", "capex_sales", "rd_sales", "roa_ebitda", "lev", "abs_abacc"]
+columns_to_lag = ["ln_sales", "capex_sales", "rd_sales", "roa_ebitda", "lev", "abs_abacc", "total_assets"]
 successful_updates = {column: 0 for column in columns_to_lag}
 
 for column in columns_to_lag:
