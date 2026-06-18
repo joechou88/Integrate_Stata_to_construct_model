@@ -9,8 +9,8 @@ stata_df.rename(columns={'bign': 'BIGN', 'mb': 'MB', 'ln_sales': 'Ln_Sales', 'ca
 ordered_columns = [
     "Underpricing",
     "Post",
-    # "Lease_Intensity", 
-    # "PostxLease_Intensity",
+    "High_Lease2", 
+    "PostxHigh_Lease2",
     "SME_IFRS_adoption",
     "Ln_Age",
     "BIGN",
@@ -41,15 +41,65 @@ if missing_cols:
     print(f"[Warning] The following columns were not found in the dataset and will be skipped: {missing_cols}")
 
 valid_columns = [col for col in ordered_columns if col in stata_df.columns]
-merged_df = stata_df[valid_columns].copy()
+stata_df = stata_df[valid_columns].copy()
 
-total_rows = len(merged_df)
-missing_value_proportions = merged_df.isnull().sum().astype(str) + "/" + str(total_rows)
+total_rows = len(stata_df)
+missing_value_proportions = stata_df.isnull().sum().astype(str) + "/" + str(total_rows)
 print("Missing value proportions per column:\n", missing_value_proportions)
-merged_df = merged_df.dropna()
-remaining_sample_count = len(merged_df)
-print(f"Remaining samples after dropping rows with missing values: {remaining_sample_count}")
+
+print(f"\n--- Sample Selection Steps ---")
+print(f"Initial total samples: {total_rows}")
+selection_df = stata_df.copy()
+
+# 1. Worldscope data
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["BIGN", "Ln_Sales", "RD_Sales", "LEV", "Relative_Offer_Size"])
+print(f"Unable to match Worldscope data: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 2. Underpricing
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["Underpricing"])
+print(f"Missing value for Underpricing variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 3. High_Lease2
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["High_Lease2"])
+print(f"Missing value for High_Lease2 variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 4. INST
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["INST"])
+print(f"Missing value for INST variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 5. Age
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["Ln_Age"])
+print(f"Missing value for Age variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 6. Other firm characteristics
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["Capex_Sales", "ROA_EBITDA"])
+print(f"Missing value for other firm characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 7. Deal characteristics
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["VC_backed", "Underwriter_Reputation"])
+print(f"Missing value for deal characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 8. Country-level controls
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna(subset=["Economic_Freedom", "CAP_Ratio", "GDP_per_capita_US", "GDP_per_capita_growth"])
+print(f"Missing value for country-level controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+# 9. Drop any remaining missing values (from base variables not explicitly listed above)
+previous_sample_count = len(selection_df)
+selection_df = selection_df.dropna()
+if previous_sample_count != len(selection_df):
+    print(f"Missing value for remaining unlisted base variables: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+
+remaining_sample_count = len(selection_df)
+print(f"\nFinal remaining samples after dropping all rows with missing values: {remaining_sample_count}")
 
 output_path = config.FILTERED_OUTPUT
-merged_df.to_stata(output_path, write_index=False)
+stata_df.to_stata(output_path, write_index=False)
 print(f"Exported to: {output_path}")

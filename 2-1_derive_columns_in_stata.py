@@ -9,13 +9,12 @@ print(f"Loading datasets:\n  - {config.SME_OUTPUT}")
 stata_df = pd.read_stata(config.SME_OUTPUT)
 
 stata_df['Post'] = np.where((stata_df['year'] - 1) > 2018, 1, 0)
-stata_df['Lease_Intensity'] = stata_df['leasenpv_at'].fillna(stata_df['rou_at'])
-stata_df['PostxLease_Intensity'] = stata_df['Post'] * stata_df['Lease_Intensity']
+stata_df['PostxHigh_Lease2'] = stata_df['Post'] * stata_df['High_Lease2']
 
 insert_map = {
     'Post': 22,
-    'Lease_Intensity': 23,
-    'PostxLease_Intensity': 24
+    'High_Lease2': 23,
+    'PostxHigh_Lease2': 24
 }
 
 for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):
