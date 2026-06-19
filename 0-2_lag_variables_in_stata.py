@@ -27,4 +27,4 @@ for column in columns_to_lag:
 
 output_path = config.LAG_OUTPUT
 stata_df.to_stata(output_path, write_index=False)
-print(f"Exported to: {output_path}")
+print(f"Exported to: {output_path}\n")
