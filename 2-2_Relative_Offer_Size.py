@@ -8,4 +8,4 @@ stata_df["Relative_Offer_Size"] = stata_df["Relative_Offer_Size"] / stata_df["to
 
 output_path = config.RELATIVE_OFFER_SIZE_OUTPUT
 stata_df.to_stata(output_path, write_index=False)
-print(f"Exported to: {output_path}")
+print(f"Exported to: {output_path}\n")

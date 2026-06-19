@@ -102,4 +102,4 @@ print(f"\nFinal remaining samples after dropping all rows with missing values: {
 
 output_path = config.FILTERED_OUTPUT
 stata_df.to_stata(output_path, write_index=False)
-print(f"Exported to: {output_path}")
+print(f"Exported to: {output_path}\n")

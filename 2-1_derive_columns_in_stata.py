@@ -28,4 +28,4 @@ stata_df = stata_df.copy()
 
 output_path = config.DERIVE_COLUMNS_OUTPUT
 stata_df.to_stata(output_path, write_index=False)
-print(f"Exported to: {output_path}")
+print(f"Exported to: {output_path}\n")

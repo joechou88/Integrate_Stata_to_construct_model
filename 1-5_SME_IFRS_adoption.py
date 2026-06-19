@@ -11,4 +11,4 @@ merged_df = merged_df.drop(columns=["Country_code2"])
 
 output_path = config.SME_OUTPUT
 merged_df.to_stata(output_path, write_index=False)
-print(f"Exported to: {output_path}")
+print(f"Exported to: {output_path}\n")

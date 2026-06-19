@@ -13,4 +13,4 @@ merged_df = merged_df[stata_df.columns]
 
 output_path = config.LEASE_NPV_OUTPUT_2014_2024
 merged_df.to_stata(output_path, write_index=False)
-print(f"Exported to: {output_path}")
+print(f"Exported to: {output_path}\n")
