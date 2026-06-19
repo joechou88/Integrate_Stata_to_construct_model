@@ -4,7 +4,7 @@ import config
 print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
-stata_df.rename(columns={'bign': 'BIGN', 'mb': 'MB', 'ln_sales': 'Ln_Sales', 'capex_sales': 'Capex_Sales', 'rd_sales': 'RD_Sales', 'roa_ebitda': 'ROA_EBITDA', 'lev': 'LEV', 'abs_abacc': 'ABS_ABACC', 'tobin': 'Tobin_Q'}, inplace=True)
+stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_sales_lag': 'Capex_Sales', 'rd_sales_lag': 'RD_Sales', 'roa_ebitda_lag': 'ROA_EBITDA', 'lev_lag': 'LEV', 'abs_abacc_lag': 'ABS_ABACC'}, inplace=True)
 
 ordered_columns = [
     "Underpricing",

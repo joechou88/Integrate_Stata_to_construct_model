@@ -9,23 +9,21 @@ stata_df["company_id"] = (
     .combine_first(stata_df["isin"])
     .combine_first(stata_df["dscd"])
 )
-valid_rows = stata_df["company_id"].notna().sum()
-stata_df = stata_df.sort_values(by=["company_id", "year"])
 columns_to_lag = ["ln_sales", "capex_sales", "rd_sales", "roa_ebitda", "lev", "abs_abacc", "total_assets"]
-successful_updates = {column: 0 for column in columns_to_lag}
 
-for column in columns_to_lag:
-    lagged_values = stata_df.groupby("company_id")[column].shift(1)
-    year_difference = stata_df.groupby("company_id")["year"].diff()
-    valid_lag_mask = (year_difference == 1) & lagged_values.notna()
-    successful_updates[column] = valid_lag_mask.sum()
-    stata_df[column] = stata_df[column].mask(year_difference == 1, lagged_values)
-
+lag_df = stata_df[["company_id", "year"] + columns_to_lag].drop_duplicates(subset=["company_id", "year"])
+lag_df["year"] = lag_df["year"] + 1
+rename_dict = {col: f"{col}_lag" for col in columns_to_lag}
+lag_df = lag_df.rename(columns=rename_dict)
+stata_df = stata_df.merge(lag_df, on=["company_id", "year"], how="left")
 stata_df = stata_df.drop(columns=["company_id"])
 
-print(f"Original {len(stata_df)} rows. Detailed updates per column:")
+valid_rows = len(stata_df)
+print(f"Original {valid_rows} rows. Detailed updates per column:")
 for column in columns_to_lag:
-    print(f"  - {column:<12}: {successful_updates[column]}/{valid_rows} updated successfully")
+    new_col_name = f"{column}_lag"
+    success_count = stata_df[new_col_name].notna().sum()
+    print(f"  - {new_col_name:<18}: {success_count}/{valid_rows} updated successfully")
 
 output_path = config.LAG_OUTPUT
 stata_df.to_stata(output_path, write_index=False)
