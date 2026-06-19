@@ -9,8 +9,8 @@ stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_sale
 ordered_columns = [
     "Underpricing",
     "Post",
-    "High_Lease2", 
-    "PostxHigh_Lease2",
+    "high_lease", 
+    "Postxhigh_lease",
     "SME_IFRS_adoption",
     "Ln_Age",
     "BIGN",
@@ -53,7 +53,7 @@ selection_df = stata_df.copy()
 
 # 1. Worldscope data
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["BIGN", "Ln_Sales", "RD_Sales", "LEV", "Relative_Offer_Size"])
+selection_df = selection_df.dropna(subset=["BIGN"])
 print(f"Unable to match Worldscope data: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 2. Underpricing
@@ -61,10 +61,10 @@ previous_sample_count = len(selection_df)
 selection_df = selection_df.dropna(subset=["Underpricing"])
 print(f"Missing value for Underpricing variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
-# 3. High_Lease2
+# 3. high_lease
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["High_Lease2"])
-print(f"Missing value for High_Lease2 variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
+selection_df = selection_df.dropna(subset=["high_lease"])
+print(f"Missing value for high_lease variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 4. INST
 previous_sample_count = len(selection_df)
@@ -78,7 +78,7 @@ print(f"Missing value for Age variable: Dropped {previous_sample_count - len(sel
 
 # 6. Other firm characteristics
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["Capex_Sales", "ROA_EBITDA"])
+selection_df = selection_df.dropna(subset=["Capex_Sales", "ROA_EBITDA", "Ln_Sales", "RD_Sales", "LEV", "Relative_Offer_Size"])
 print(f"Missing value for other firm characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 7. Deal characteristics
