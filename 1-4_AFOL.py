@@ -21,11 +21,11 @@ merged_df = stata_df.merge(ibes_grouped, on=['country', 'year'], how='left')
 merged_count = merged_df['AFOL'].notna().sum()
 
 missing_counts = merged_df[merged_df['AFOL'].isna()].groupby(['country', 'year']).size().reset_index(name='Missing_Count')
-with open("1-3_missing_AFOL_for_country_year_combinations.txt", "w", encoding="utf-8") as f:
+with open("1-4_missing_AFOL_for_country_year_combinations.txt", "w", encoding="utf-8") as f:
     f.write(missing_counts.to_string(index=False))
 
 matched_counts = merged_df[merged_df['AFOL'].notna()].groupby(['country', 'year']).size().reset_index(name='Matched_Count')
-with open("1-3_matched_AFOL_for_country_year_combinations.txt", "w", encoding="utf-8") as f:
+with open("1-4_matched_AFOL_for_country_year_combinations.txt", "w", encoding="utf-8") as f:
     f.write(matched_counts.to_string(index=False))
 
 output_path = config.AFOL_OUTPUT

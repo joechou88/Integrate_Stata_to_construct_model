@@ -4,7 +4,7 @@ import config
 print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
-stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_sales_lag': 'Capex_Sales', 'rd_sales_lag': 'RD_Sales', 'roa_ebitda_lag': 'ROA_EBITDA', 'lev_lag': 'LEV', 'abs_abacc_lag': 'ABS_ABACC', 'GDP_per_capita_US': 'GDP_per_capita'}, inplace=True)
+stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_sales_lag': 'Capex_Sales', 'rd_sales_lag': 'RD_Sales', 'roa_ebitda_lag': 'ROA_EBITDA', 'lev_lag': 'LEV', 'abs_abacc_lag': 'ABS_ABACC', 'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
 
 ordered_columns = [
     "sedol",
@@ -37,7 +37,7 @@ ordered_columns = [
     "Price_Stabilization",
     "Economic_Freedom",
     "CAP_Ratio",
-    "GDP_per_capita",
+    "Ln_GDP_per_capita_US",
     "GDP_per_capita_growth",
     "AFOL"
 ]
@@ -94,7 +94,7 @@ print(f"Missing value for deal characteristics controls: Dropped {previous_sampl
 
 # 8. Country-level controls
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["Economic_Freedom", "CAP_Ratio", "GDP_per_capita", "GDP_per_capita_growth"])
+selection_df = selection_df.dropna(subset=["Economic_Freedom", "CAP_Ratio", "Ln_GDP_per_capita_US", "GDP_per_capita_growth"])
 print(f"Missing value for country-level controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 9. Drop any remaining missing values (from base variables not explicitly listed above)

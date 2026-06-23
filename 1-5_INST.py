@@ -28,8 +28,8 @@ mask_zero = merged_df['price'].notna() & merged_df['shrout'].notna() & merged_df
 merged_df.loc[mask_zero, ['valueheld', 'inst']] = 0
 
 columns = ['sedol', 'Issue_Date', 'qtrdate', 'valueheld', 'price', 'shrout', 'inst']
-merged_df[merged_df['inst'].isna()][columns].to_excel("1-4_missing_INST.xlsx", index=False)
-merged_df[merged_df['inst'].notna()][columns].to_excel("1-4_matched_INST.xlsx", index=False)
+merged_df[merged_df['inst'].isna()][columns].to_excel("1-5_missing_INST.xlsx", index=False)
+merged_df[merged_df['inst'].notna()][columns].to_excel("1-5_matched_INST.xlsx", index=False)
 
 merged_df.rename(columns={'inst': 'INST'}, inplace=True)
 merged_df['Issue_Date'] = merged_df['Issue_Date'].dt.strftime('%Y-%m-%d')

@@ -7,4 +7,5 @@ check
 *.csv
 *.txt
 *.dta
+*.do
 *.sas7bdat

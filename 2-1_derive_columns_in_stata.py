@@ -8,7 +8,7 @@ warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 print(f"Loading datasets:\n  - {config.SME_OUTPUT}")
 stata_df = pd.read_stata(config.SME_OUTPUT)
 
-stata_df['Post'] = np.where((stata_df['year'] - 1) > 2018, 1, 0)
+stata_df['Post'] = np.where(stata_df['year'] >= 2019, 1, 0)
 stata_df['Postxhigh_lease'] = stata_df['Post'] * stata_df['high_lease']
 
 insert_map = {
