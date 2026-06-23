@@ -9,12 +9,12 @@ COMPUSTAT_DIR = "Compustat"
 STATA_DIR = "Stata"
 
 # File name
-LEASE_NPV_INPUT_2015_2024 = os.path.join(STATA_DIR, "Financial_npv_lease20152024_0611.dta")
+LEASE_NPV_INPUT_2015_2024 = os.path.join(STATA_DIR, "Financial_npv_lease20152024_0620.dta")
 suffix = ""
-if "_0611" in LEASE_NPV_INPUT_2015_2024:
-    suffix = "_0611"
-elif "_0512" in LEASE_NPV_INPUT_2015_2024:
-    suffix = "_0512"
+if "_0620" in LEASE_NPV_INPUT_2015_2024:
+    suffix = "_0620"
+elif "_0621" in LEASE_NPV_INPUT_2015_2024:
+    suffix = "_0621"
 CONTROLS_INPUT_1996_2019 = os.path.join(INPUT_DIR, "calc_controls_1996_2019.sas7bdat")
 NPV_LEASE_2000_2019 = os.path.join(INPUT_DIR, LEASE_DIR, "npv_lease_2000_2019_202606_sic.sas7bdat")
 ROU_2015_2024 = os.path.join(INPUT_DIR, LEASE_DIR, "ROU_2015_2024.sas7bdat")
