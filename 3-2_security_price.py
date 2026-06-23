@@ -46,7 +46,7 @@ merged_df = pd.merge(
     how='left'
 )
 
-merged_df['Underpricing'] = (merged_df['closing_price'] - merged_df['Offer_Price_USD']) / merged_df['Offer_Price_USD']
+merged_df['Underpricing'] = (merged_df['closing_price'] - merged_df['Offer_Price_Local']) / merged_df['Offer_Price_Local']
 
 # ==========================================
 # Phase 2: Merge by SEDOL
@@ -81,7 +81,7 @@ unmapped_df = pd.merge(
     how='left'
 )
 
-unmapped_df['Underpricing'] = (unmapped_df['closing_price'] - unmapped_df['Offer_Price_USD']) / unmapped_df['Offer_Price_USD']
+unmapped_df['Underpricing'] = (unmapped_df['closing_price'] - unmapped_df['Offer_Price_Local']) / unmapped_df['Offer_Price_Local']
 merged_df = pd.concat([mapped_df, unmapped_df], ignore_index=True).sort_values('original_row_index')
 
 

@@ -1,9 +1,9 @@
 import pandas as pd
 import config
 
-print(f"Loading datasets:\n  - {config.COUNTRY_LEVEL_CONTROLS_INPUT}\n  - {config.SDC_OUTPUT}")
+print(f"Loading datasets:\n  - {config.COUNTRY_LEVEL_CONTROLS_INPUT}\n  - {config.OFFER_PRICE_OUTPUT}")
 excel_raw = pd.read_excel(config.COUNTRY_LEVEL_CONTROLS_INPUT)
-stata_df = pd.read_stata(config.SDC_OUTPUT)
+stata_df = pd.read_stata(config.OFFER_PRICE_OUTPUT)
 
 excel_raw.columns = excel_raw.columns.str.replace(" ", "_")
 excel_raw = excel_raw.rename(columns={

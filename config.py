@@ -9,12 +9,14 @@ COMPUSTAT_DIR = "Compustat"
 STATA_DIR = "Stata"
 
 # File name
-LEASE_NPV_INPUT_2015_2024 = os.path.join(STATA_DIR, "Financial_npv_lease20152024_0620.dta")
+LEASE_NPV_INPUT_2015_2024 = os.path.join(STATA_DIR, "Financial_npv_lease20152024_0621.dta")
 suffix = ""
 if "_0620" in LEASE_NPV_INPUT_2015_2024:
     suffix = "_0620"
 elif "_0621" in LEASE_NPV_INPUT_2015_2024:
     suffix = "_0621"
+COUNTRY_CODE_WITH_CURD = os.path.join(INPUT_DIR, "country_code_with_curd.xlsx")
+EXCHANGE_RATE_2015_2024 = os.path.join(INPUT_DIR, COMPUSTAT_DIR, "global_exchange_rate_2015_2024.csv")
 CONTROLS_INPUT_1996_2019 = os.path.join(INPUT_DIR, "calc_controls_1996_2019.sas7bdat")
 NPV_LEASE_2000_2019 = os.path.join(INPUT_DIR, LEASE_DIR, "npv_lease_2000_2019_202606_sic.sas7bdat")
 ROU_2015_2024 = os.path.join(INPUT_DIR, LEASE_DIR, "ROU_2015_2024.sas7bdat")
@@ -34,6 +36,7 @@ LEASE_NPV_OUTPUT_2014_2024 = os.path.join(STATA_DIR, f"Financial_npv_lease201420
 LAG_OUTPUT = os.path.join(STATA_DIR, f"Financial_npv_lease20142024_lag_variables{suffix}.dta")
 NPV_LEASE_OUTPUT = os.path.join(STATA_DIR, f"Financial_npv_lease20142024_lag_variables{suffix}.dta")
 SDC_OUTPUT = os.path.join(STATA_DIR, f"IPO_2015_2024{suffix}.dta")
+OFFER_PRICE_OUTPUT = os.path.join(STATA_DIR, f"IPO_2015_2024_with_updated_offer_price{suffix}.dta")
 COUNTRY_LEVEL_CONTROLS_OUTPUT = os.path.join(STATA_DIR, f"IPO_2015_2024_with_country_level_controls{suffix}.dta")
 AFOL_OUTPUT = os.path.join(STATA_DIR, f"IPO_2015_2024_with_AFOL{suffix}.dta")
 INST_OUTPUT = os.path.join(STATA_DIR, f"IPO_2015_2024_with_INST{suffix}.dta")
