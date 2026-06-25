@@ -34,6 +34,7 @@ SME_INPUT = os.path.join(INPUT_DIR, "SME_IFRS_adoption.xlsx")
 MARKET_PRICE_INPUT = os.path.join(INPUT_DIR, COMPUSTAT_DIR, "global_market_price_2014_2024_with_country_code.csv")
 SECURITY_PRICE_INPUT = os.path.join(INPUT_DIR, COMPUSTAT_DIR, "global_security_daily_price_2014_2024.csv")
 WORLDSCOPE_FUNDAMENTALS_INPUT = os.path.join(INPUT_DIR, "Worldscope_fundamental_variables.csv")
+ORIGIN_LEASE_2000_2019 = os.path.join(INPUT_DIR, LEASE_DIR, "npv_lease_43country_2000_2019.csv")
 
 LEASE_NPV_OUTPUT_2014_2024 = os.path.join(STATA_DIR, f"Financial_npv_lease20142024{suffix}.dta")
 LAG_OUTPUT = os.path.join(STATA_DIR, f"Financial_npv_lease20142024_lag_variables{suffix}.dta")
@@ -50,3 +51,4 @@ MARKET_PRICE_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with
 SECURITY_PRICE_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with_ipo_underpricing{suffix}.dta")
 WORLDSCOPE_EQUITY_COUNTS_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with_ipo_activities{suffix}.dta")
 FILTERED_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_filtered{suffix}.dta")
+MARK_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_marked_lease_intensity_pre{suffix}.dta")
