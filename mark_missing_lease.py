@@ -23,7 +23,7 @@ stata_df = stata_df.merge(
 
 stata_df['missing_lease_condition'] = stata_df['missing_lease_condition'].fillna(False)
 stata_df['orig_lease_intensity_pre'] = stata_df['lease_intensity_pre']
-print(f"Rows changed from 0 to missing (.): {stata_df['missing_lease_condition'].sum()}")
+print(f"Number of rows changed to missing (.): {stata_df['missing_lease_condition'].sum()}")
 stata_df.loc[stata_df['missing_lease_condition'] == True, 'orig_lease_intensity_pre'] = np.nan
 stata_df.drop(columns=['missing_lease_condition'], inplace=True)
 
