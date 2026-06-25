@@ -15,8 +15,8 @@ ordered_columns = [
     "sic2digit",
     "Underpricing",
     "Post",
+    "lease_intensity_pre",
     "high_lease", 
-    "Postxhigh_lease",
     "SME_IFRS_adoption",
     "Ln_Age",
     "BIGN",
@@ -67,9 +67,9 @@ previous_sample_count = len(selection_df)
 selection_df = selection_df.dropna(subset=["Underpricing"])
 print(f"Missing value for Underpricing variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
-# 3. high_lease
+# 3. lease
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["high_lease"])
+selection_df = selection_df.dropna(subset=["lease_intensity_pre", "high_lease"])
 print(f"Missing value for high_lease variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 4. INST
