@@ -11,6 +11,7 @@ ordered_columns = [
     "isin",
     "dscd",
     "year",
+    "country",
     "country_code2",
     "sic2digit",
     "Underpricing",

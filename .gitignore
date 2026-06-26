@@ -2,6 +2,7 @@ __pycache__
 check
 
 *.docx
+*.rtf
 *.pdf
 *.xlsx
 *.csv
