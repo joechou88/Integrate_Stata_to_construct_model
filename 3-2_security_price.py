@@ -76,4 +76,4 @@ date_mismatch_count = len(unmapped_firms) - missing_isin_and_sedol
 
 print(f"--- Unmapped reasons for {len(unmapped_firms)} firms ---")
 print(f"1. ISIN and SEDOL not found in security database: {missing_isin_and_sedol}")
-print(f"2. No trading records within date range (-3, +60): {date_mismatch_count}")
+print(f"2. No trading records within date range (-3, +60): {date_mismatch_count}\n")

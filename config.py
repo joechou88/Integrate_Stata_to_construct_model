@@ -49,6 +49,6 @@ DERIVE_COLUMNS_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_de
 RELATIVE_OFFER_SIZE_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with_relative_offer_size{suffix}.dta")
 MARKET_PRICE_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with_market_return_and_market_volatility{suffix}.dta")
 SECURITY_PRICE_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with_ipo_underpricing{suffix}.dta")
-WORLDSCOPE_EQUITY_COUNTS_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_with_ipo_activities{suffix}.dta")
+WORLDSCOPE_EQUITY_COUNTS_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_divided_by_DataStream_listed_equities{suffix}.dta")
 FILTERED_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_filtered{suffix}.dta")
 MARK_OUTPUT = os.path.join(STATA_DIR, f"IPO_{START_YEAR}_{END_YEAR}_marked_lease_intensity_pre{suffix}.dta")

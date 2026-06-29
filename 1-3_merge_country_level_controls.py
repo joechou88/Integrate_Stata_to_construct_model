@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import config
 
@@ -24,6 +25,8 @@ control_df = excel_raw[primary_keys + control_columns].copy()
 for col in control_columns + ['year']:
     control_df[col] = pd.to_numeric(control_df[col], errors='coerce')
 control_df['country_code'] = control_df['country_code'].astype(str).str.strip()
+
+control_df['CAP_Ratio'] = np.log(control_df['CAP_Ratio'] / 100)
 
 # Keep first instance of duplicated keys
 control_df = control_df.drop_duplicates(subset=primary_keys, keep='first')
