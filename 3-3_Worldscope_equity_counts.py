@@ -14,6 +14,7 @@ merged_df = stata_df.merge(
     how='left'
 )
 merged_df['IPO_count'] = np.log(merged_df['IPO_count'] / merged_df['listed_equities'])
+merged_df['AFOL'] = merged_df['Total_AFOL'] / merged_df['listed_equities']
 merged_df.rename(columns={'IPO_count': 'IPO_Activities'}, inplace=True)
 merged_df.drop(columns=['COUNTRY_CODE2', 'YEAR', 'listed_equities'], inplace=True, errors='ignore')
 
