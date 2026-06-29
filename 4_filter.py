@@ -4,7 +4,7 @@ import config
 print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
-stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_sales_lag': 'Capex_Sales', 'rd_sales_lag': 'RD_Sales', 'roa_ebitda_lag': 'ROA_EBITDA', 'lev_lag': 'LEV', 'abs_abacc_lag': 'ABS_ABACC', 'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
+stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_at_lag': 'Capex_TA', 'rd_at_lag': 'RD_TA', 'roa_ebitda_lag': 'ROA_EBITDA', 'lev_lag': 'LEV', 'abs_abacc_lag': 'ABS_ABACC', 'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
 
 ordered_columns = [
     "sedol",
@@ -22,8 +22,8 @@ ordered_columns = [
     "Ln_Age",
     "BIGN",
     "Ln_Sales",
-    "Capex_Sales",
-    "RD_Sales",
+    "Capex_TA",
+    "RD_TA",
     "ROA_EBITDA",
     "LEV",
     "INST",
@@ -85,7 +85,7 @@ print(f"Missing value for Age variable: Dropped {previous_sample_count - len(sel
 
 # 6. Other firm characteristics
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["Capex_Sales", "ROA_EBITDA", "Ln_Sales", "RD_Sales", "LEV", "Relative_Offer_Size"])
+selection_df = selection_df.dropna(subset=["Capex_TA", "ROA_EBITDA", "Ln_Sales", "RD_TA", "LEV", "Relative_Offer_Size"])
 print(f"Missing value for other firm characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 7. Deal characteristics
