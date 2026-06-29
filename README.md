@@ -22,20 +22,20 @@
 - **Objective**: convert the USD offer price to local currency by merging the SDC data (Stata) with country-specific currency codes (Excel) and daily exchange rate data (CSV), using country code and issue date as primary key.
 - **Input**: `Input/Compustat/global_exchange_rate_2015_2024.csv`, `Stata/Financial_npv_lease20142024_lag_variables_0621.dta`, `Input/country_code_with_curd.xlsx`
 - **Output**: `Stata/IPO_2015_2019_with_updated_offer_price_0621.dta`
-#### 1-3. Integrate country-level controls data (`merge_country_level_controls.py`)
+#### 1-3. Integrate country-level controls data (`1-3_merge_country_level_controls.py`)
 - **Objective**: Merge the data with country-level controls (from Excel) matching year t to year t, as contemporaneous macroeconomic conditions and market sentiment directly impact underwriter pricing during the issue year. We also divide the original `CAP_Ratio` by 100 and apply a natural logarithm transformation: `CAP_Ratio = ln(CAP_Ratio / 100)`
 - **Problem**: In 2021, The Heritage Foundation removed Hong Kong from its independent rankings, merging its economic freedom score with China's, citing Beijing's control over Hong Kong's economic policies. (Source: https://www.bbc.com/zhongwen/trad/business-56277534)
 - **Solution**: Macroeconomic freedom is highly "rigid" and rarely mutates in the short term. To avoid data distortion caused by the extreme score gap between China and Hong Kong (approx. 50 vs. 90), Hong Kong's 2020 score was directly applied to the 2021–2024 Hong Kong IPO samples.
 - **Input**: `Stata/IPO_2015_2019_with_updated_offer_price_0621.dta`, `Input/country_controls.xlsx`
 - **Output**: `Stata/IPO_2015_2019_with_country_level_controls_0621.dta`
 - **Match result**: A total of 2,344 rows were exported. This includes 2,340 successful matches, along with 4 unmapped rows.
-#### 1-4. Integrate Financial Analyst Forecast data (`AFOL.py`)
+#### 1-4. Integrate Financial Analyst Forecast data (`1-4_AFOL.py`)
 - **Objective**: Merge the data with total AFOL (from SAS) matching year t to year t, using primary key `country_code` + `fpe_year`.
 - **Memo**: `AFOL` is considered as country-level control instead of firm-level control since financial analysts typically do not immediately release earnings forecasts at the time of an IPO, thus there should be no `AFOL` data for that firm in that year.
 - **Input**: `Input/ibes_non_us_1983_2025.sas7bdat`, `Input/ibes_us_1983_2025.sas7bdat`, `Input/ibes_int_1983_2025.sas7bdat`, `Stata/IPO_2015_2019_with_country_level_controls_0621.dta`
 - **Output**: `Stata/IPO_2015_2019_with_AFOL_0621.dta`
 - **Match result**: A total of 2,344 rows were exported. This includes 2,344 successful matches, along with 0 unmapped rows.
-#### 1-5. Integrate Institutional Ownership data (`INST.py`)
+#### 1-5. Integrate Institutional Ownership data (`1-5_INST.py`)
 - **Objective**: Merge the data with INST (from SAS) by forward-matching the IPO `Issue_Date` to the nearest subsequent quarter-end (`qtrdate`) within 180 days. We prioritize the nearest quarter-end where `valueheld`, `price`, and `shrout` are all simultaneously observable.
 - **Missing Value Rule**:
   | Missing Status | Interpretation | Action |
@@ -58,7 +58,7 @@
 #### 2-2. Calculate Relative_Offer_Size (`2-2_Relative_Offer_Size.py`)
 - **Input**: `Stata/IPO_2015_2019_derive_columns_0621.dta`
 - **Output**: `Stata/IPO_2015_2019_with_relative_offer_size_0621.dta`
-#### 3-1. Calculate Market_Return and Market_Volatility (`market_price.py`)
+#### 3-1. Calculate Market_Return and Market_Volatility (`3-1_market_price.py`)
 - **Objective**: calculate variables below
     - Market_Return = ln(P<sub>t-1</sub> / P<sub>t-91</sub>), where:
       - P<sub>t-1</sub> = market closing price one trading day before `Issue_Date` t  
@@ -74,7 +74,7 @@
 - **Input**: `Input/Compustat/global_market_price_2014_2024_with_country_code.csv`, `Stata/IPO_2015_2019_with_relative_offer_size_0621.dta`
 - **Output**: `Stata/IPO_2015_2019_with_market_return_and_market_volatility_0621.dta`
 - **Match result**: A total of 2,344 rows were exported. This includes 2,344 successful matches, along with 0 unmapped rows.
-#### 3-2. Calculate IPO Underpricing (`security_price.py`)
+#### 3-2. Calculate IPO Underpricing (`3-2_security_price.py`)
 - **Objective**: calculate variables below
     - Underpricing = (P<sub>t</sub> - P<sub>offer</sub>) / P<sub>offer</sub>, where:
       - P<sub>t</sub> = the first valid market closing price (from Compustat) of an IPO within a $[-3, +60]$ day window around the `Issue_Date` t (from SDC), prioritizing the exact issue date, followed by the closest subsequent day, and lastly the closest preceding day.
@@ -91,7 +91,7 @@
 - **Input**: `Stata/IPO_2015_2019_with_ipo_underpricing_0621.dta`, `Input/Worldscope_fundamental_variables.csv`
 - **Output**: `Stata/IPO_2015_2019_divided_by_DataStream_listed_equities_0621.dta`
 - **Match result**: A total of 2,344 rows were exported. This includes 1,926 successful matches, along with 418 unmapped rows.
-#### 4. Column Filtering (`filter.py`)
+#### 4. Column Filtering (`4_filter.py`)
 - **Objective**: drop unnecessary variables for model 1 and calculate samples dropped for each stage.
 - **Input**: `Stata/IPO_2015_2019_divided_by_DataStream_listed_equities_0621.dta`
 - **Output**: `Stata/IPO_2015_2019_filtered_0621.dta`
