@@ -23,7 +23,7 @@
 - **Input**: `Input/Compustat/global_exchange_rate_2015_2024.csv`, `Stata/Financial_npv_lease20142024_lag_variables_0621.dta`, `Input/country_code_with_curd.xlsx`
 - **Output**: `Stata/IPO_2015_2019_with_updated_offer_price_0621.dta`
 #### 1-3. Integrate country-level controls data (`1-3_merge_country_level_controls.py`)
-- **Objective**: Merge the data with country-level controls (from Excel) matching year t to year t, as contemporaneous macroeconomic conditions and market sentiment directly impact underwriter pricing during the issue year. We also divide the original `CAP_Ratio` by 100 and apply a natural logarithm transformation: `CAP_Ratio = ln(CAP_Ratio / 100)`
+- **Objective**: Merge the data with country-level controls (from Excel) matching year t to year t, as contemporaneous macroeconomic conditions and market sentiment directly impact underwriter pricing during the issue year. We also divide the original `CAP_Ratio` by 100 and apply a natural logarithm transformation: `Ln_CAP_Ratio = ln(CAP_Ratio / 100)`
 - **Problem**: In 2021, The Heritage Foundation removed Hong Kong from its independent rankings, merging its economic freedom score with China's, citing Beijing's control over Hong Kong's economic policies. (Source: https://www.bbc.com/zhongwen/trad/business-56277534)
 - **Solution**: Macroeconomic freedom is highly "rigid" and rarely mutates in the short term. To avoid data distortion caused by the extreme score gap between China and Hong Kong (approx. 50 vs. 90), Hong Kong's 2020 score was directly applied to the 2021–2024 Hong Kong IPO samples.
 - **Input**: `Stata/IPO_2015_2019_with_updated_offer_price_0621.dta`, `Input/country_controls.xlsx`
@@ -96,40 +96,40 @@
 - **Input**: `Stata/IPO_2015_2019_divided_by_DataStream_listed_equities_0621.dta`
 - **Output**: `Stata/IPO_2015_2019_filtered_0621.dta`
 - **Missing value proportions per column**:
-  - sedol                        0/2344
-  - isin                         0/2344
-  - dscd                         0/2344
-  - year                         0/2344
-  - country                      0/2344
-  - country_code2                0/2344
-  - sic2digit                  418/2344
-  - Underpricing               262/2344
-  - Post                         0/2344
-  - lease_intensity_pre        418/2344
-  - high_lease                 418/2344
-  - SME_IFRS_adoption            0/2344
-  - Ln_Age                     809/2344
-  - BIGN                       418/2344
-  - Ln_Sales                   617/2344
-  - Capex_TA                  1281/2344
-  - RD_TA                      617/2344
-  - ROA_EBITDA                 706/2344
-  - LEV                        617/2344
-  - INST                       114/2344
-  - Relative_Offer_Size        617/2344
-  - VC_backed                   10/2344
-  - Firm_Commitment              0/2344
-  - Underwriter_Reputation       0/2344
-  - Bookbuilt                    0/2344
-  - Market_Return                0/2344
-  - Market_Volatility            0/2344
-  - IPO_Activities               0/2344
-  - Price_Stabilization          0/2344
-  - Economic_Freedom             4/2344
-  - CAP_Ratio                    7/2344
-  - Ln_GDP_per_capita_US         4/2344
-  - GDP_per_capita_growth        4/2344
-  - AFOL                         0/2344
+  - sedol                        : 0/2344
+  - isin                         : 0/2344
+  - dscd                         : 0/2344
+  - year                         : 0/2344
+  - country                      : 0/2344
+  - country_code2                : 0/2344
+  - sic2digit                  : 418/2344
+  - Underpricing               : 262/2344
+  - Post                         : 0/2344
+  - lease_intensity_pre        : 418/2344
+  - high_lease                 : 418/2344
+  - SME_IFRS_adoption            : 0/2344
+  - Ln_Age                     : 809/2344
+  - BIGN                       : 418/2344
+  - Ln_Sales                   : 617/2344
+  - Capex_TA                  : 1281/2344
+  - RD_TA                      : 617/2344
+  - ROA_EBITDA                 : 706/2344
+  - LEV                        : 617/2344
+  - INST                       : 114/2344
+  - Relative_Offer_Size        : 617/2344
+  - VC_backed                   : 10/2344
+  - Firm_Commitment              : 0/2344
+  - Underwriter_Reputation       : 0/2344
+  - Bookbuilt                    : 0/2344
+  - Market_Return                : 0/2344
+  - Market_Volatility            : 0/2344
+  - IPO_Activities               : 0/2344
+  - Price_Stabilization          : 0/2344
+  - Economic_Freedom             : 4/2344
+  - Ln_CAP_Ratio                 : 7/2344
+  - Ln_GDP_per_capita_US         : 4/2344
+  - GDP_per_capita_growth        : 4/2344
+  - AFOL                         : 0/2344
 ---
 #### Country and Stock Index Reference Table
 Worldscope(DataStream) Variable Definitions (2023): https://drive.google.com/file/d/1ZE9ln7Hpz22WhWdok19RgPY0qKA8y-DU/view?usp=drive_link

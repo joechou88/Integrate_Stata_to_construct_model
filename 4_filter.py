@@ -37,7 +37,7 @@ ordered_columns = [
     "IPO_Activities",
     "Price_Stabilization",
     "Economic_Freedom",
-    "CAP_Ratio",
+    "Ln_CAP_Ratio",
     "Ln_GDP_per_capita_US",
     "GDP_per_capita_growth",
     "AFOL"
@@ -95,7 +95,7 @@ print(f"Missing value for deal characteristics controls: Dropped {previous_sampl
 
 # 8. Country-level controls
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["Economic_Freedom", "CAP_Ratio", "Ln_GDP_per_capita_US", "GDP_per_capita_growth"])
+selection_df = selection_df.dropna(subset=["Economic_Freedom", "Ln_CAP_Ratio", "Ln_GDP_per_capita_US", "GDP_per_capita_growth"])
 print(f"Missing value for country-level controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 9. Drop any remaining missing values (from base variables not explicitly listed above)
