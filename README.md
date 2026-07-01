@@ -94,40 +94,46 @@
 - **Input**: `Stata/IPO_2015_2019_divided_by_DataStream_listed_equities_0621.dta`
 - **Output**: `Stata/IPO_2015_2019_filtered_0621.dta`
 - **Missing value proportions per column**:
-  - sedol                        : 0/2344
-  - isin                         : 0/2344
-  - dscd                         : 0/2344
-  - year                         : 0/2344
-  - country                      : 0/2344
-  - country_code2                : 0/2344
-  - sic2digit                  : 418/2344
-  - Underpricing               : 262/2344
-  - Post                         : 0/2344
-  - lease_intensity_pre        : 418/2344
-  - high_lease                 : 418/2344
-  - SME_IFRS_adoption            : 0/2344
-  - Ln_Age                     : 809/2344
-  - BIGN                       : 418/2344
-  - Ln_Sales                   : 617/2344
-  - Capex_TA                  : 1281/2344
-  - RD_TA                      : 617/2344
-  - ROA_EBITDA                 : 706/2344
-  - LEV                        : 617/2344
-  - INST                       : 114/2344
-  - Relative_Offer_Size        : 617/2344
-  - VC_backed                   : 10/2344
-  - Firm_Commitment              : 0/2344
-  - Underwriter_Reputation       : 0/2344
-  - Bookbuilt                    : 0/2344
-  - Ln_Market_Return             : 0/2344
-  - Market_Volatility            : 0/2344
-  - Ln_IPO_Activities            : 0/2344
-  - Price_Stabilization          : 0/2344
-  - Economic_Freedom             : 4/2344
-  - Ln_CAP_Ratio                 : 7/2344
-  - Ln_GDP_per_capita_US         : 4/2344
-  - GDP_per_capita_growth        : 4/2344
-  - AFOL                         : 0/2344
+  - sedol             : 0/2344 missing
+  - isin              : 0/2344 missing
+  - dscd              : 0/2344 missing
+  - year              : 0/2344 missing
+  - country           : 0/2344 missing
+  - country_code2     : 0/2344 missing
+  - sic2digit         : 418/2344 missing
+  - Underpricing      : 262/2344 missing
+  - Post              : 0/2344 missing
+  - lease_intensity_pre: 418/2344 missing
+  - high_lease        : 418/2344 missing
+  - SME_IFRS_adoption : 0/2344 missing
+  - Age               : 809/2344 missing
+  - Ln_Age            : 809/2344 missing
+  - bign              : 418/2344 missing
+  - sales_lag         : 617/2344 missing
+  - ln_sales_lag      : 617/2344 missing
+  - capex_at_lag      : 1281/2344 missing
+  - rd_at_lag         : 617/2344 missing
+  - roa_ebitda_lag    : 706/2344 missing
+  - lev_lag           : 617/2344 missing
+  - INST              : 114/2344 missing
+  - Relative_Offer_Size: 617/2344 missing
+  - VC_backed         : 10/2344 missing
+  - Firm_Commitment   : 0/2344 missing
+  - Underwriter_Reputation: 0/2344 missing
+  - Bookbuilt         : 0/2344 missing
+  - Market_Return     : 0/2344 missing
+  - Ln_Market_Return  : 0/2344 missing
+  - Market_Volatility : 0/2344 missing
+  - IPO_Activities    : 0/2344 missing
+  - Ln_IPO_Activities : 0/2344 missing
+  - Price_Stabilization: 0/2344 missing
+  - Economic_Freedom  : 4/2344 missing
+  - CAP_Ratio         : 7/2344 missing
+  - Ln_CAP_Ratio      : 7/2344 missing
+  - GDP_per_capita_US : 4/2344 missing
+  - Ln_GDP_per_capita_US: 4/2344 missing
+  - GDP_per_capita_growth: 4/2344 missing
+  - AFOL              : 0/2344 missing
 ---
 #### Country and Stock Index Reference Table
 Worldscope(DataStream) Variable Definitions (2023): https://drive.google.com/file/d/1ZE9ln7Hpz22WhWdok19RgPY0qKA8y-DU/view?usp=drive_link
