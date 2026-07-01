@@ -54,10 +54,11 @@ market_df = market_df.sort_values(['country_code', 'data_date'])
 market_df_by_country = market_df.groupby('country_code')
 
 market_df['daily_return'] = market_df_by_country['daily_price'].pct_change()
+market_df['Market_Return'] = market_df['daily_price'] / market_df_by_country['daily_price'].shift(90)
+market_df['Ln_Market_Return'] = np.log(market_df['Market_Return'])
 market_df['Market_Volatility'] = market_df_by_country['daily_return'].transform(lambda x: x.rolling(21).std())
-market_df['Market_Return'] = np.log(market_df['daily_price'] / market_df_by_country['daily_price'].shift(90))
 
-market_df = market_df[['country_code', 'data_date', 'Market_Return', 'Market_Volatility']]
+market_df = market_df[['country_code', 'data_date', 'Market_Return', 'Ln_Market_Return', 'Market_Volatility']]
 market_df = market_df.drop_duplicates(subset=['country_code', 'data_date'])
 market_df = market_df.sort_values('data_date')
 

@@ -4,14 +4,12 @@
 - **Input**: `Stata/Financial_npv_lease20152024_0621.dta`
 - **Output**: `Stata/Financial_npv_lease20142024_lag_variables_0621.dta`
 - **Detailed updates**:
+  - sales_lag         : 538258/596812 updated successfully
   - ln_sales_lag      : 538258/596812 updated successfully
   - capex_at_lag      : 400458/596812 updated successfully
-  - capex_sales_lag   : 400458/596812 updated successfully
   - rd_at_lag         : 538258/596812 updated successfully
-  - rd_sales_lag      : 538258/596812 updated successfully
   - roa_ebitda_lag    : 519304/596812 updated successfully
   - lev_lag           : 538258/596812 updated successfully
-  - abs_abacc_lag     : 365326/596812 updated successfully
   - total_assets_lag  : 538258/596812 updated successfully
 #### 1-1. Integrate SDC data (`1-1_merge_SDC.py`)
 - **Objective**: combine SDC data (Excel) with Financial Lease data (Stata), using primary key `dscd`, `isin`, or `sedol`. We keep all SDC records instead of dropping unmatched rows.
@@ -121,9 +119,9 @@
   - Firm_Commitment              : 0/2344
   - Underwriter_Reputation       : 0/2344
   - Bookbuilt                    : 0/2344
-  - Market_Return                : 0/2344
+  - Ln_Market_Return             : 0/2344
   - Market_Volatility            : 0/2344
-  - IPO_Activities               : 0/2344
+  - Ln_IPO_Activities            : 0/2344
   - Price_Stabilization          : 0/2344
   - Economic_Freedom             : 4/2344
   - Ln_CAP_Ratio                 : 7/2344

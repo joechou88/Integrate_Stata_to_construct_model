@@ -76,7 +76,7 @@ merged_df['country_code'] = merged_df['country'].map(country_code_df.set_index('
 merged_df['country_code2'] = merged_df['country'].map(country_code_df.set_index('Country_name')['Country_code2'])
 
 added_columns = [
-    'Underpricing', 'Ln_Age', 'VC_backed', 'Relative_Offer_Size',
+    'Underpricing', 'Age', 'Ln_Age', 'VC_backed', 'Relative_Offer_Size',
     'Firm_Commitment', 'Underwriter_Reputation', 'Integer_Offer_Price',
     'Bookbuilt', 'IPO_count', 'Price_Stabilization', 'Equity_Carve_out',
     'Dates: Issue Date', 'Dates: Offer Year (CCYY)', 'Offer Price (USD)'
@@ -95,19 +95,20 @@ merged_df = merged_df[original_stata_cols].copy()
 
 insert_map = {
     'Underpricing': 21,
-    'Ln_Age': 22,
-    'Relative_Offer_Size': 110,
-    'VC_backed': 115,
-    'Firm_Commitment': 116,
-    'Underwriter_Reputation': 117,
-    'Integer_Offer_Price': 118,
-    'Bookbuilt': 119,
-    'Equity_Carve_out': 120,
-    'IPO_count': 121, 
-    'Price_Stabilization': 122,
-    'Issue_Date': 123,
-    'Offer_Year_CCYY': 124,
-    'Offer_Price_USD': 125
+    'Age': 22,
+    'Ln_Age': 23,
+    'Relative_Offer_Size': 111,
+    'VC_backed': 116,
+    'Firm_Commitment': 117,
+    'Underwriter_Reputation': 118,
+    'Integer_Offer_Price': 119,
+    'Bookbuilt': 120,
+    'Equity_Carve_out': 121,
+    'IPO_count': 122, 
+    'Price_Stabilization': 123,
+    'Issue_Date': 143,
+    'Offer_Year_CCYY': 125,
+    'Offer_Price_USD': 126
 }
 
 for col, idx in sorted(insert_map.items(), key=lambda x: x[1]):

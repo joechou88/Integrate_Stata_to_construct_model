@@ -9,7 +9,7 @@ stata_df["company_id"] = (
     .combine_first(stata_df["isin"])
     .combine_first(stata_df["dscd"])
 )
-columns_to_lag = ["ln_sales", "capex_at", "capex_sales", "rd_at", "rd_sales", "roa_ebitda", "lev", "abs_abacc", "total_assets"]
+columns_to_lag = ["sales", "ln_sales", "capex_at", "rd_at", "roa_ebitda", "lev", "total_assets"]
 
 lag_df = stata_df[["company_id", "year"] + columns_to_lag].drop_duplicates(subset=["company_id", "year"])
 lag_df["year"] = lag_df["year"] + 1

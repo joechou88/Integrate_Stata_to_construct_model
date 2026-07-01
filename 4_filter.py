@@ -4,7 +4,7 @@ import config
 print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
-stata_df.rename(columns={'bign': 'BIGN', 'ln_sales_lag': 'Ln_Sales', 'capex_at_lag': 'Capex_TA', 'rd_at_lag': 'RD_TA', 'roa_ebitda_lag': 'ROA_EBITDA', 'lev_lag': 'LEV', 'abs_abacc_lag': 'ABS_ABACC', 'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
+stata_df.rename(columns={'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
 
 ordered_columns = [
     "sedol",
@@ -19,13 +19,15 @@ ordered_columns = [
     "lease_intensity_pre",
     "high_lease", 
     "SME_IFRS_adoption",
+    "Age",
     "Ln_Age",
-    "BIGN",
-    "Ln_Sales",
-    "Capex_TA",
-    "RD_TA",
-    "ROA_EBITDA",
-    "LEV",
+    "bign",
+    "sales_lag",
+    "ln_sales_lag",
+    "capex_at_lag",
+    "rd_at_lag",
+    "roa_ebitda_lag",
+    "lev_lag",
     "INST",
     "Relative_Offer_Size",
     "VC_backed",
@@ -33,11 +35,15 @@ ordered_columns = [
     "Underwriter_Reputation",
     "Bookbuilt",
     "Market_Return",
+    "Ln_Market_Return",
     "Market_Volatility",
     "IPO_Activities",
+    "Ln_IPO_Activities",
     "Price_Stabilization",
     "Economic_Freedom",
+    "CAP_Ratio",
     "Ln_CAP_Ratio",
+    "GDP_per_capita_US",
     "Ln_GDP_per_capita_US",
     "GDP_per_capita_growth",
     "AFOL"
@@ -51,8 +57,10 @@ valid_columns = [col for col in ordered_columns if col in stata_df.columns]
 stata_df = stata_df[valid_columns].copy()
 
 total_rows = len(stata_df)
-missing_value_proportions = stata_df.isnull().sum().astype(str) + "/" + str(total_rows)
-print("Missing value proportions per column:\n", missing_value_proportions)
+missing_counts = stata_df.isnull().sum()
+print("Missing value proportions per column:")
+for col, missing_count in missing_counts.items():
+    print(f"  - {col:<18}: {missing_count}/{total_rows} missing")
 
 print(f"\n--- Sample Selection Steps ---")
 print(f"Initial total samples: {total_rows}")
@@ -60,7 +68,7 @@ selection_df = stata_df.copy()
 
 # 1. Worldscope data
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["BIGN"])
+selection_df = selection_df.dropna(subset=["bign"])
 print(f"Unable to match Worldscope data: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 2. Underpricing
@@ -85,7 +93,7 @@ print(f"Missing value for Age variable: Dropped {previous_sample_count - len(sel
 
 # 6. Other firm characteristics
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["Capex_TA", "ROA_EBITDA", "Ln_Sales", "RD_TA", "LEV", "Relative_Offer_Size"])
+selection_df = selection_df.dropna(subset=["capex_at_lag", "roa_ebitda_lag", "ln_sales_lag", "rd_at_lag", "lev_lag", "Relative_Offer_Size"])
 print(f"Missing value for other firm characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 7. Deal characteristics
@@ -95,7 +103,7 @@ print(f"Missing value for deal characteristics controls: Dropped {previous_sampl
 
 # 8. Country-level controls
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["Economic_Freedom", "Ln_CAP_Ratio", "Ln_GDP_per_capita_US", "GDP_per_capita_growth"])
+selection_df = selection_df.dropna(subset=["Ln_Market_Return", "Market_Volatility", "Ln_IPO_Activities", "Price_Stabilization", "Economic_Freedom", "Ln_CAP_Ratio", "Ln_GDP_per_capita_US", "GDP_per_capita_growth"])
 print(f"Missing value for country-level controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 9. Drop any remaining missing values (from base variables not explicitly listed above)
