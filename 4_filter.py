@@ -5,6 +5,7 @@ print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
 stata_df.rename(columns={'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
+stata_df['sic1digit'] = stata_df['sic1'].dropna().astype(int).astype(str).str.zfill(4).str[0].astype(int)
 
 ordered_columns = [
     "sedol",
@@ -13,6 +14,8 @@ ordered_columns = [
     "year",
     "country",
     "country_code2",
+    "sic1",
+    "sic1digit",
     "sic2digit",
     "Underpricing",
     "Post",
@@ -93,12 +96,12 @@ print(f"Missing value for Age variable: Dropped {previous_sample_count - len(sel
 
 # 6. Other firm characteristics
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["capex_at_lag", "roa_ebitda_lag", "ln_sales_lag", "rd_at_lag", "lev_lag", "Relative_Offer_Size"])
+selection_df = selection_df.dropna(subset=["ln_sales_lag", "capex_at_lag", "rd_at_lag", "roa_ebitda_lag", "lev_lag"])
 print(f"Missing value for other firm characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 7. Deal characteristics
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["VC_backed", "Underwriter_Reputation"])
+selection_df = selection_df.dropna(subset=["Relative_Offer_Size", "VC_backed", "Firm_Commitment", "Underwriter_Reputation", "Bookbuilt"])
 print(f"Missing value for deal characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 8. Country-level controls
