@@ -1,7 +1,7 @@
 import os
 
 START_YEAR = 2015
-END_YEAR = 2019
+END_YEAR = 2024
 
 # Folder name
 INPUT_DIR = "Input"
