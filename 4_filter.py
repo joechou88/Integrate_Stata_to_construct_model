@@ -4,6 +4,10 @@ import config
 print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
+start_year = 2015
+end_year = 2022
+stata_df = stata_df[stata_df['year'].between(start_year, end_year)]
+
 stata_df.rename(columns={'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
 stata_df['sic1digit'] = stata_df['sic1'].dropna().astype(int).astype(str).str.zfill(4).str[0].astype(int)
 
@@ -118,6 +122,6 @@ if previous_sample_count != len(selection_df):
 remaining_sample_count = len(selection_df)
 print(f"\nFinal remaining samples after dropping all rows with missing values: {remaining_sample_count}")
 
-output_path = config.FILTERED_OUTPUT
+output_path = f"Stata/IPO_{start_year}_{end_year}_filtered.dta"
 stata_df.to_stata(output_path, write_index=False)
 print(f"Exported to: {output_path}\n")
