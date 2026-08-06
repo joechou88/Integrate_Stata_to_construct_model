@@ -12,3 +12,4 @@ check
 *.dta
 *.do
 *.sas7bdat
+*.smcl

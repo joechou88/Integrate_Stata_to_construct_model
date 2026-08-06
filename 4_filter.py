@@ -5,7 +5,7 @@ print(f"Loading datasets:\n  - {config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT}")
 stata_df = pd.read_stata(config.WORLDSCOPE_EQUITY_COUNTS_OUTPUT)
 
 start_year = 2015
-end_year = 2022
+end_year = 2019
 stata_df = stata_df[stata_df['year'].between(start_year, end_year)]
 
 stata_df.rename(columns={'Ln_GDPOP': 'Ln_GDP_per_capita_US'}, inplace=True)
@@ -24,17 +24,18 @@ ordered_columns = [
     "Underpricing",
     "Post",
     "lease_intensity_pre",
-    "high_lease", 
+    "high_lease",
+    "lease_group",
     "SME_IFRS_adoption",
     "Age",
     "Ln_Age",
     "bign",
     "sales_lag",
     "ln_sales_lag",
+    "capex_sales_lag",
     "capex_at_lag",
+    "rd_sales_lag",
     "rd_at_lag",
-    "roa_ebitda_lag",
-    "lev_lag",
     "INST",
     "Relative_Offer_Size",
     "VC_backed",
@@ -85,7 +86,7 @@ print(f"Missing value for Underpricing variable: Dropped {previous_sample_count 
 
 # 3. lease
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["lease_intensity_pre", "high_lease"])
+selection_df = selection_df.dropna(subset=["high_lease"])
 print(f"Missing value for high_lease variable: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 4. INST
@@ -100,7 +101,7 @@ print(f"Missing value for Age variable: Dropped {previous_sample_count - len(sel
 
 # 6. Other firm characteristics
 previous_sample_count = len(selection_df)
-selection_df = selection_df.dropna(subset=["ln_sales_lag", "capex_at_lag", "rd_at_lag", "roa_ebitda_lag", "lev_lag"])
+selection_df = selection_df.dropna(subset=["ln_sales_lag", "capex_sales_lag", "rd_sales_lag"])
 print(f"Missing value for other firm characteristics controls: Dropped {previous_sample_count - len(selection_df)} | Remaining: {len(selection_df)}")
 
 # 7. Deal characteristics
